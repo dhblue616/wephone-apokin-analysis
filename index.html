@@ -1,0 +1,694 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WePhoneShop.es — SEO数据可视化报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* shadcn/ui inspired design system */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  padding: 1.5rem;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted));
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: hsl(var(--background));
+  padding: 2rem;
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border: 1px solid hsl(var(--border));
+}
+
+/* Typography */
+h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: hsl(var(--foreground));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Section styling */
+.section {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+/* KPI Cards - shadcn/ui Card style */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.kpi .card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.kpi .card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-1px);
+}
+
+.kpi .card:hover::before {
+  opacity: 1;
+}
+
+.kpi .label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi .value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  line-height: 1;
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background: hsl(var(--card));
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+table th {
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: 0.875rem;
+  color: hsl(var(--foreground));
+}
+
+table tbody tr:hover {
+  background: hsl(var(--muted) / 0.5);
+}
+
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Chart containers */
+.figure {
+  margin: 2rem 0;
+}
+
+.chart-container {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  height: 400px;
+}
+
+/* Utility classes */
+.small {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: calc(var(--radius) - 2px);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  border: 1px solid hsl(var(--border));
+}
+
+.summary {
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: 2rem 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .container {
+    padding: 1.5rem;
+  }
+  
+  .kpi {
+    grid-template-columns: 1fr;
+  }
+  
+  h1 {
+    font-size: 1.875rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  table {
+    font-size: 0.75rem;
+  }
+  
+  table th,
+  table td {
+    padding: 0.5rem;
+  }
+}
+
+/* Navigation Menu */
+.nav-menu {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  background: hsl(var(--muted));
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: calc(var(--radius) - 2px);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+}
+
+.nav-button:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  text-decoration: none;
+}
+
+.nav-button.active {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.nav-button:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Focus states for accessibility */
+.kpi .card:focus-visible,
+table:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+<!-- Navigation Menu -->
+<nav class="nav-menu">
+    <a href="index.html" class="nav-button active">WePhoneShop.es 报告</a>
+    <a href="apokin.html" class="nav-button">Apokin.es 报告</a>
+    <a href="comparison.html" class="nav-button">对比分析</a>
+    <a href="seo-plan.html" class="nav-button">SEO优化方案</a>
+    <a href="puloka.html" class="nav-button">Puloka 品牌调研</a>
+  </nav>
+
+<h1>WePhoneShop.es — SEO数据可视化报告</h1>
+<p class="small">报告生成时间：2025-10-07 · 数据来源：Google</p>
+
+<div class="section summary">
+  <h2>概览</h2>
+  <div class="kpi">
+    <div class="card"><div class="label">权威评分</div><div class="value">10</div></div>
+    <div class="card"><div class="label">时间范围</div><div class="value">2025-09</div></div>
+    <div class="card"><div class="label">访问量（Visits）</div><div class="value">4409</div></div>
+    <div class="card"><div class="label">反向链接（总数）</div><div class="value">580</div></div>
+    <div class="card"><div class="label">关键词总数（自然）</div><div class="value">594</div></div>
+    <div class="card"><div class="label">流量趋势</div><div class="value">+24%</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>一、域名概览（Domain Overview）</h2>
+  <h3>1) 国家来源分布</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="countryDistributionChart"></canvas>
+    </div>
+  </div>
+  
+    <table>
+      <thead><tr><th>国家/地区</th><th>占比(%)</th><th>估算访问量</th></tr></thead>
+      <tbody><tr><td>España (ES)</td><td>98.5</td><td>682</td></tr><tr><td>Estados Unidos (US)</td><td>0.1</td><td>1</td></tr><tr><td>México (MX)</td><td>0.1</td><td>1</td></tr></tbody>
+    </table>
+    
+
+  <h3>2) 品牌与非品牌关键词占比</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="brandKeywordChart"></canvas>
+    </div>
+  </div>
+
+  <h3>3) 主要自然关键词</h3>
+
+  
+    <table>
+      <thead><tr><th>关键词</th><th>排名</th><th>流量占比(%)</th><th>CPC(USD)</th><th>搜索量</th></tr></thead>
+      <tbody><tr><td>wephone</td><td>1</td><td>51.6</td><td>0.32</td><td>513</td></tr><tr><td>we phone</td><td>1</td><td>20.1</td><td>0.17</td><td>170</td></tr><tr><td>phone</td><td>4</td><td>26.3</td><td>0.21</td><td>261</td></tr><tr><td>beacon light ich-009</td><td>4</td><td>2.0</td><td>0.2</td><td>20</td></tr></tbody>
+    </table>
+    
+
+  <h3>4) 竞争网站（自然搜索重叠）</h3>
+  
+    <table>
+      <thead><tr><th>竞争域名</th><th>共同关键词数</th></tr></thead>
+      <tbody><tr><td>movileshoponline.com</td><td>17</td></tr><tr><td>idudas.es</td><td>7</td></tr><tr><td>mydesignsit.es</td><td>4</td></tr><tr><td>hercomar.com</td><td>3</td></tr><tr><td>comparativabalizas.com</td><td>2</td></tr></tbody>
+    </table>
+    
+
+
+
+  <h3>6) 反向链接结构</h3>
+  <div class="kpi">
+    <div class="card"><div class="label">总反向链接</div><div class="value">580</div></div>
+    <div class="card"><div class="label">引荐域名</div><div class="value">75</div></div>
+    <div class="card"><div class="label">引用 IP</div><div class="value">57</div></div>
+    <div class="card"><div class="label">Follow 链接</div><div class="value">485</div></div>
+    <div class="card"><div class="label">Nofollow 链接</div><div class="value">96</div></div>
+  </div>
+  <p class="small">链接类型占比：文本 57% · 图片 32% · 其他 11%</p>
+  <h4>Top 引荐域名</h4>
+  
+    <table>
+      <thead><tr><th>引荐域名</th><th>链接数</th><th>Follow/Nofollow</th></tr></thead>
+      <tbody><tr><td>shoppingworld.es</td><td>147</td><td>Follow</td></tr><tr><td>planetworldshop.es</td><td>98</td><td>Follow</td></tr><tr><td>aziendadidagna.it</td><td>10</td><td>Nofollow</td></tr><tr><td>mr-articlesignme.com</td><td>8</td><td>Follow</td></tr><tr><td>palankpoint.com</td><td>8</td><td>Follow</td></tr></tbody>
+    </table>
+    
+  <h4>常见锚文本样例</h4>
+  
+    <table>
+      <thead><tr><th>锚文本</th><th>次数</th></tr></thead>
+      <tbody><tr><td>Wephone</td><td>75</td></tr><tr><td>shoppingworld.es</td><td>57</td></tr><tr><td>funda personalizada</td><td>21</td></tr><tr><td>funda para smartphone</td><td>3</td></tr></tbody>
+    </table>
+    
+</div>
+
+<div class="section">
+  <h2>二、流量分析（Traffic Analytics）</h2>
+  <div class="kpi">
+    <div class="card"><div class="label">时间范围</div><div class="value">2025-09</div></div>
+    <div class="card"><div class="label">访问量（Visits）</div><div class="value">4409</div></div>
+    <div class="card"><div class="label">独立访客（Users）</div><div class="value">25.5K</div></div>
+    <div class="card"><div class="label">每次访问页数</div><div class="value">5.2</div></div>
+    <div class="card"><div class="label">平均访问时长</div><div class="value">09:39</div></div>
+    <div class="card"><div class="label">跳出率</div><div class="value">69.47%</div></div>
+  </div>
+
+  <h3>1) 流量来源渠道</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="trafficSourceChart"></canvas>
+    </div>
+  </div>
+  
+    <table>
+      <thead><tr><th>渠道</th><th>占比(%)</th></tr></thead>
+      <tbody><tr><td>直接（Direct）</td><td>68</td></tr><tr><td>自然搜索（Organic）</td><td>15</td></tr><tr><td>引荐（Referral）</td><td>12</td></tr><tr><td>社交（Social）</td><td>0</td></tr><tr><td>广告（Paid）</td><td>0</td></tr></tbody>
+    </table>
+    
+
+  <h3>2) 主要来源网站</h3>
+  
+    <table>
+      <thead><tr><th>来源网站</th><th>占比(%)</th></tr></thead>
+      <tbody><tr><td>google.com</td><td>45.34</td></tr><tr><td>goglo.es</td><td>16.21</td></tr><tr><td>dianxiaomi.cn</td><td>13.08</td></tr><tr><td>brandia.com</td><td>10.0</td></tr></tbody>
+    </table>
+    
+
+  <h3>3) 跳转去向网站</h3>
+  
+    <table>
+      <thead><tr><th>跳转去向网站</th><th>占比(%)</th></tr></thead>
+      <tbody><tr><td>digimobiles.es</td><td>10.29</td></tr><tr><td>google.com</td><td>10.26</td></tr><tr><td>prestashop-project.org</td><td>3.57</td></tr><tr><td>prestashop.com</td><td>3.57</td></tr></tbody>
+    </table>
+    
+
+  <h3>4) Top 页面（按访问量/占比）</h3>
+  
+    <table>
+      <thead><tr><th>页面URL</th><th>流量占比(%)</th><th>访问量</th><th>备注</th></tr></thead>
+      <tbody><tr><td>cristal.wephoneshop.es</td><td>68.13</td><td>3022</td><td>主要子站/入口</td></tr><tr><td>wephoneshop.es</td><td>8.62</td><td>566</td><td></td></tr><tr><td>wephoneshop.es/admin9341/index.php</td><td>7.85</td><td>526</td><td></td></tr><tr><td>wephoneshop.eu/clone-row-gs8p-auriculares-bluetooth-unit-tws-mini-macaron-azul</td><td>3.34</td><td>148</td><td></td></tr><tr><td>wephoneshop.es/admin9341/index.php/security/comprensioned</td><td>2.45</td><td>108</td><td></td></tr></tbody>
+    </table>
+    
+
+
+    
+</div>
+
+<div class="section">
+  <h2>三、自然搜索研究（Organic Research）</h2>
+  <div class="kpi">
+    <div class="card"><div class="label">自然关键词总数</div><div class="value">7.6K</div></div>
+    <div class="card"><div class="label">自然流量（/月）</div><div class="value">3K</div></div>
+    <div class="card"><div class="label">流量价值（USD/月）</div><div class="value">$3.9K</div></div>
+    <div class="card"><div class="label">主要流量页面数</div><div class="value">1.6K</div></div>
+    <div class="card"><div class="label">反向链接（报告内）</div><div class="value">11K</div></div>
+  </div>
+
+  <h3>1) 关键词意图分布</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="keywordIntentChart"></canvas>
+    </div>
+  </div>
+  
+    <table>
+      <thead><tr><th>意图</th><th>占比(%)</th><th>估算关键词数</th></tr></thead>
+      <tbody><tr><td>导航（Navigational）</td><td>51.6</td><td>513</td></tr><tr><td>信息（Informational）</td><td>20.1</td><td>324</td></tr><tr><td>商业（Commercial）</td><td>2.0</td><td>20</td></tr><tr><td>交易（Transactional）</td><td>26.3</td><td>261</td></tr></tbody>
+    </table>
+    
+
+  <h3>2) 主要自然流量页面</h3>
+  
+    <table>
+      <thead><tr><th>页面URL</th><th>自然流量占比(%)</th><th>外链数</th><th>平均排名</th></tr></thead>
+      <tbody><tr><td>wephoneshop.es/</td><td>87.24</td><td>82</td><td>1</td></tr><tr><td>wephoneshop.es/shop/beacon-light-ich-009</td><td>6.74</td><td>5</td><td>3</td></tr><tr><td>wephoneshop.es/virgor-power-banks</td><td>0.87</td><td>3</td><td>3</td></tr><tr><td>wephoneshop.es/shop/auriculares</td><td>0.58</td><td>2</td><td>4</td></tr></tbody>
+    </table>
+    
+
+  <h3>3) 竞争域名（关键词重叠）</h3>
+  
+    <table>
+      <thead><tr><th>竞争域名</th><th>共同关键词数</th></tr></thead>
+      <tbody><tr><td>movileshoponline.com</td><td>17</td></tr><tr><td>idudas.es</td><td>7</td></tr><tr><td>mydesignsit.es</td><td>4</td></tr><tr><td>hercomar.com</td><td>3</td></tr><tr><td>comparativabalizas.com</td><td>2</td></tr></tbody>
+    </table>
+    
+
+
+</div>
+
+<hr/>
+
+</div>
+
+<script>
+// 国家来源分布图表
+const countryDistributionCtx = document.getElementById('countryDistributionChart').getContext('2d');
+new Chart(countryDistributionCtx, {
+    type: 'pie',
+    data: {
+        labels: ['西班牙', '美国', '墨西哥'],
+        datasets: [{
+            label: '流量比例',
+            data: [98.5, 0.1, 0.1],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(255, 205, 86, 0.7)'
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(255, 205, 86, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '国家来源分布'
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// 品牌与非品牌关键词占比图表
+const brandKeywordCtx = document.getElementById('brandKeywordChart').getContext('2d');
+new Chart(brandKeywordCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['品牌关键词', '非品牌关键词'],
+        datasets: [{
+            label: '关键词占比',
+            data: [85, 15],
+            backgroundColor: [
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(255, 159, 64, 0.7)'
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '品牌与非品牌关键词占比'
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+// 关键词意图分布图表
+const keywordIntentCtx = document.getElementById('keywordIntentChart').getContext('2d');
+new Chart(keywordIntentCtx, {
+    type: 'bar',
+    data: {
+        labels: ['导航型', '信息型', '商业型', '交易型'],
+        datasets: [{
+            label: '关键词数量',
+            data: [513, 324, 20, 261],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 205, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 205, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '关键词意图分布'
+            },
+            legend: {
+                position: 'bottom'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// 流量来源渠道图表
+const trafficSourceCtx = document.getElementById('trafficSourceChart').getContext('2d');
+new Chart(trafficSourceCtx, {
+    type: 'pie',
+    data: {
+        labels: ['直接访问', '自然搜索', '引荐', '社交媒体', '付费广告'],
+        datasets: [{
+            label: '流量来源',
+            data: [68, 15, 12, 0, 0],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.7)',
+                'rgba(54, 162, 235, 0.7)',
+                'rgba(255, 205, 86, 0.7)',
+                'rgba(75, 192, 192, 0.7)',
+                'rgba(153, 102, 255, 0.7)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 205, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '流量来源渠道分布'
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+
+</script>
+
+<div class="section">
+  <h2>四、邮件营销</h2>
+  <div class="kpi">
+    <div class="card"><div class="label">暂无邮件营销数据</div><div class="value">-</div></div>
+  </div>
+</div>
+
+</body>
+</html>

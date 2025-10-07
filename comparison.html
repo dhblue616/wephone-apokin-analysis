@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WePhoneShop.es vs Apokin.es — SEO数据对比分析报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* shadcn/ui inspired design system */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
+}
+
+/* Enhanced base styles with better performance */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+.container {
+  max-width: min(1400px, 100vw - 2rem);
+  margin: 0 auto;
+  background-color: hsl(var(--background));
+  padding: clamp(1rem, 3vw, 2rem);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 
+    0 1px 3px 0 rgb(0 0 0 / 0.1), 
+    0 1px 2px -1px rgb(0 0 0 / 0.1),
+    0 0 0 1px hsl(var(--border));
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Enhanced Typography with better scaling */
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: hsl(var(--foreground));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Enhanced Section styling */
+.section {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2rem);
+  border-bottom: 1px solid hsl(var(--border));
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+/* Enhanced KPI Cards with better responsive behavior */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: clamp(0.75rem, 2vw, 1rem);
+  margin: clamp(1rem, 2vw, 1.5rem) 0;
+}
+
+.kpi .card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.kpi .card:hover {
+  box-shadow: 0 8px 25px -8px rgb(0 0 0 / 0.15), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-2px);
+}
+
+.kpi .card:hover::before {
+  opacity: 1;
+}
+
+.kpi .label {
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi .value {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Enhanced Comparison Grid with better responsive behavior */
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
+}
+
+.comparison-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.comparison-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  transition: width 0.3s ease;
+}
+
+.comparison-card.wephone::before {
+  background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+}
+
+.comparison-card.apokin::before {
+  background: linear-gradient(180deg, #10b981, #047857);
+}
+
+.comparison-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -8px rgb(0 0 0 / 0.15), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+}
+
+.comparison-card:hover::before {
+  width: 6px;
+}
+
+.site-title {
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: hsl(var(--foreground));
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wephone .site-title {
+  color: #3b82f6;
+}
+
+.apokin .site-title {
+  color: #10b981;
+}
+
+/* Enhanced Table styling with horizontal scroll */
+.table-container {
+  overflow-x: auto;
+  margin: clamp(1rem, 2vw, 1.5rem) 0;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+table {
+  width: 100%;
+  min-width: 500px;
+  border-collapse: collapse;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+table th {
+  background: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  text-align: left;
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+  border-bottom: 1px solid hsl(var(--border));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+table td {
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  color: hsl(var(--foreground));
+  white-space: nowrap;
+}
+
+table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+table tbody tr:hover {
+  background: hsl(var(--muted) / 0.5);
+}
+
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Enhanced Chart containers with responsive heights */
+.figure {
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
+}
+
+.chart-container {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  margin: clamp(0.75rem, 1.5vw, 1rem) 0;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  height: clamp(300px, 50vw, 400px);
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-container canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* Utility classes */
+.small {
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  color: hsl(var(--muted-foreground));
+  line-height: 1.5;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: calc(var(--radius) - 2px);
+  padding: 0.25rem 0.75rem;
+  font-size: clamp(0.625rem, 1.25vw, 0.75rem);
+  font-weight: 500;
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  border: 1px solid hsl(var(--border));
+  white-space: nowrap;
+}
+
+.summary {
+  border-radius: var(--radius);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  margin: clamp(1rem, 2vw, 1.5rem) 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid hsl(var(--border));
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
+}
+
+/* Loading and Animation States */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Focus states for accessibility */
+.kpi .card:focus-visible,
+.comparison-card:focus-visible,
+.table-container:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Enhanced Navigation Menu with better mobile experience */
+.nav-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(0.5rem, 1vw, 0.75rem);
+  background: hsl(var(--muted));
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: calc(var(--radius) - 2px);
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(0.75rem, 2vw, 1rem);
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: transparent;
+  color: hsl(var(--muted-foreground));
+  min-height: 44px; /* Touch-friendly minimum */
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-button:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.nav-button:hover::before {
+  left: 100%;
+}
+
+.nav-button.active {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  border-color: hsl(var(--border));
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.nav-button:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Enhanced Responsive Design */
+
+/* Super small screens (phones in portrait) */
+@media (max-width: 480px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .container {
+    padding: 1rem;
+    border-radius: var(--radius);
+  }
+  
+  .kpi {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .nav-menu {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  
+  .nav-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .chart-container {
+    height: 250px;
+    padding: 0.75rem;
+  }
+  
+  table {
+    min-width: 400px;
+  }
+  
+  .section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+  }
+}
+
+/* Small screens (phones in landscape, small tablets) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .kpi {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+  
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .nav-menu {
+    justify-content: center;
+  }
+  
+  .chart-container {
+    height: 320px;
+  }
+}
+
+/* Medium screens (tablets) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    max-width: 95vw;
+  }
+  
+  .kpi {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  
+  .comparison-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+  
+  .chart-container {
+    height: 350px;
+  }
+  
+  .nav-menu {
+    justify-content: flex-start;
+  }
+}
+
+/* Large screens (desktops) */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+  
+  .kpi {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  
+  .comparison-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .chart-container {
+    height: 400px;
+  }
+}
+
+/* Extra large screens */
+@media (min-width: 1441px) {
+  .container {
+    max-width: 1400px;
+    padding: 2.5rem;
+  }
+  
+  .kpi {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+  
+  .chart-container {
+    height: 450px;
+  }
+  
+  .section {
+    margin-bottom: 4rem;
+    padding-bottom: 2.5rem;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+    padding: 0;
+  }
+  
+  .container {
+    box-shadow: none;
+    border: none;
+    max-width: none;
+  }
+  
+  .nav-menu {
+    display: none;
+  }
+  
+  .chart-container {
+    height: auto;
+    min-height: 300px;
+  }
+  
+  .section {
+    break-inside: avoid;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+<!-- Navigation Menu -->
+<nav class="nav-menu">
+    <a href="index.html" class="nav-button">WePhoneShop.es 报告</a>
+    <a href="apokin.html" class="nav-button">Apokin.es 报告</a>
+    <a href="comparison.html" class="nav-button active">对比分析</a>
+    <a href="seo-plan.html" class="nav-button">SEO优化方案</a>
+    <a href="puloka.html" class="nav-button">Puloka 品牌调研</a>
+  </nav>
+
+<h1>WePhoneShop.es vs Apokin.es — SEO数据对比分析报告</h1>
+<p class="small">报告生成时间：2025-10-07 · 数据来源：Google</p>
+
+<div class="section summary">
+  <h2>📊 核心指标对比概览</h2>
+  <div class="comparison-grid">
+    <div class="comparison-card wephone">
+      <div class="site-title">WePhoneShop.es</div>
+      <div class="kpi">
+        <div class="card"><div class="label">权威评分</div><div class="value">10</div></div>
+        <div class="card"><div class="label">自然流量（/月）</div><div class="value">682</div></div>
+        <div class="card"><div class="label">付费流量（/月）</div><div class="value">19</div></div>
+        <div class="card"><div class="label">反向链接（总数）</div><div class="value">580</div></div>
+        <div class="card"><div class="label">关键词总数（自然）</div><div class="value">594</div></div>
+        <div class="card"><div class="label">流量趋势</div><div class="value">+24%</div></div>
+      </div>
+    </div>
+    
+    <div class="comparison-card apokin">
+      <div class="site-title">Apokin.es</div>
+      <div class="kpi">
+        <div class="card"><div class="label">权威评分</div><div class="value">25</div></div>
+        <div class="card"><div class="label">自然流量（/月）</div><div class="value">3K</div></div>
+        <div class="card"><div class="label">付费流量（/月）</div><div class="value">89</div></div>
+        <div class="card"><div class="label">反向链接（总数）</div><div class="value">11K</div></div>
+        <div class="card"><div class="label">关键词总数（自然）</div><div class="value">7.6K</div></div>
+        <div class="card"><div class="label">流量趋势</div><div class="value">+15%</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>一、核心指标对比分析</h2>
+  
+  <h3>1) 权威评分与流量对比</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="authorityTrafficChart"></canvas>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>网站</th><th>权威评分</th><th>自然流量/月</th><th>付费流量/月</th><th>流量趋势</th><th>优势分析</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>WePhoneShop.es</strong></td>
+          <td>10</td>
+          <td>682</td>
+          <td>19</td>
+          <td>+24%</td>
+          <td>流量增长率更高</td>
+        </tr>
+        <tr>
+          <td><strong>Apokin.es</strong></td>
+          <td>25</td>
+          <td>3,000</td>
+          <td>89</td>
+          <td>+15%</td>
+          <td>权威评分、流量规模更大</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>二、流量分析对比</h2>
+  
+  <h3>1) 用户行为指标对比</h3>
+  <div class="comparison-grid">
+    <div class="comparison-card wephone">
+      <div class="site-title">WePhoneShop.es 用户行为</div>
+      <div class="kpi">
+        <div class="card"><div class="label">访问量（Visits）</div><div class="value">4,409</div></div>
+        <div class="card"><div class="label">独立访客（Users）</div><div class="value">887</div></div>
+        <div class="card"><div class="label">每次访问页数</div><div class="value">7.3</div></div>
+        <div class="card"><div class="label">平均访问时长</div><div class="value">07:21</div></div>
+        <div class="card"><div class="label">跳出率</div><div class="value">49.19%</div></div>
+      </div>
+    </div>
+    
+    <div class="comparison-card apokin">
+      <div class="site-title">Apokin.es 用户行为</div>
+      <div class="kpi">
+        <div class="card"><div class="label">访问量（Visits）</div><div class="value">37.7K</div></div>
+        <div class="card"><div class="label">独立访客（Users）</div><div class="value">25.5K</div></div>
+        <div class="card"><div class="label">每次访问页数</div><div class="value">5.2</div></div>
+        <div class="card"><div class="label">平均访问时长</div><div class="value">09:39</div></div>
+        <div class="card"><div class="label">跳出率</div><div class="value">69.47%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>2) 地理分布对比</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="geoDistributionChart"></canvas>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>网站</th><th>西班牙 (%)</th><th>美国 (%)</th><th>墨西哥 (%)</th><th>地理集中度</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>WePhoneShop.es</strong></td>
+          <td>98.5%</td>
+          <td>0.1%</td>
+          <td>0.1%</td>
+          <td>高度集中（本土市场）</td>
+        </tr>
+        <tr>
+          <td><strong>Apokin.es</strong></td>
+          <td>52.7%</td>
+          <td>10.6%</td>
+          <td>0.5%</td>
+          <td>相对分散（国际化）</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>三、流量来源渠道对比</h2>
+  
+  <h3>1) 流量来源分布对比</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="trafficSourceChart"></canvas>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>网站</th><th>直接流量</th><th>自然搜索</th><th>引荐流量</th><th>社交媒体</th><th>付费广告</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>WePhoneShop.es</strong></td>
+          <td>68%</td>
+          <td>15%</td>
+          <td>12%</td>
+          <td>0%</td>
+          <td>0%</td>
+        </tr>
+        <tr>
+          <td><strong>Apokin.es</strong></td>
+          <td>45%</td>
+          <td>40%</td>
+          <td>5%</td>
+          <td>5%</td>
+          <td>5%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>四、关键词策略对比</h2>
+  
+  <h3>1) 关键词意图分布对比</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="keywordIntentChart"></canvas>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>网站</th><th>导航型</th><th>信息型</th><th>商业型</th><th>交易型</th><th>策略特点</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>WePhoneShop.es</strong></td>
+          <td>51.6%</td>
+          <td>20.1%</td>
+          <td>2.0%</td>
+          <td>26.3%</td>
+          <td>品牌导向+交易转化</td>
+        </tr>
+        <tr>
+          <td><strong>Apokin.es</strong></td>
+          <td>52.7%</td>
+          <td>0.5%</td>
+          <td>10.6%</td>
+          <td>30.6%</td>
+          <td>品牌导向+商业转化</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>五、反向链接结构对比</h2>
+  
+  <h3>1) 链接权威性对比</h3>
+  <div class="figure">
+    <div class="chart-container">
+      <canvas id="backlinkChart"></canvas>
+    </div>
+  </div>
+  
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr><th>网站</th><th>总反向链接</th><th>引荐域名</th><th>Follow链接</th><th>Nofollow链接</th><th>链接质量</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>WePhoneShop.es</strong></td>
+          <td>580</td>
+          <td>75</td>
+          <td>485 (83.6%)</td>
+          <td>96 (16.4%)</td>
+          <td>中等规模，高质量比例</td>
+        </tr>
+        <tr>
+          <td><strong>Apokin.es</strong></td>
+          <td>11,000</td>
+          <td>403</td>
+          <td>10,900 (99.1%)</td>
+          <td>67 (0.9%)</td>
+          <td>大规模，极高质量比例</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="section">
+  <h2>六、邮件营销</h2>
+  
+  <div class="comparison-grid">
+    <div class="comparison-card wephone">
+      <div class="site-title">WePhoneShop.es</div>
+      <div class="metric-row">
+        <span class="metric-label">邮件营销状态</span>
+        <span class="metric-value">暂无数据</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">发送频率</span>
+        <span class="metric-value">-</span>
+      </div>
+    </div>
+    
+    <div class="comparison-card apokin">
+      <div class="site-title">Apokin.es</div>
+      <div class="metric-row">
+        <span class="metric-label">邮件营销状态</span>
+        <span class="metric-value">活跃运营</span>
+      </div>
+      <div class="metric-row">
+        <span class="metric-label">发送频率</span>
+        <span class="metric-value">2~3次/周</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="summary">
+    <h3>📧 邮件营销分析</h3>
+    <p><strong>Apokin.es</strong> 拥有活跃的邮件营销策略，平均每周向订阅用户发送2-3次邮件，有助于维护用户关系和促进转化。</p>
+    <p><strong>WePhoneShop.es</strong> 目前暂无邮件营销数据，这可能是一个潜在的营销机会，建议考虑建立邮件营销体系。</p>
+    <p>邮件营销是维护客户关系、提高复购率的重要渠道，Apokin.es在这方面具有明显优势。</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>七、网站附属工具</h2>
+  
+  <div class="comparison-grid">
+    <div class="comparison-card wephone">
+      <div class="site-title">WePhoneShop.es</div>
+      <div class="tool-info">
+        <h4>🔧 cristal.wephoneshop.es</h4>
+        <p class="tool-description">钢化膜通用型号在线查询系统（B端客户专用）</p>
+        <div class="metric-row">
+          <span class="metric-label">页面URL</span>
+          <span class="metric-value">cristal.wephoneshop.es</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">流量占比</span>
+          <span class="metric-value">68.13%</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">访问量</span>
+          <span class="metric-value">3,022</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">平均访问时长</span>
+          <span class="metric-value">260秒</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="comparison-card apokin">
+      <div class="site-title">Apokin.es</div>
+      <div class="tool-info">
+        <h4>🚫 无附属工具</h4>
+        <p class="tool-description">暂无专门的附属工具或子系统</p>
+        <div class="metric-row">
+          <span class="metric-label">页面URL</span>
+          <span class="metric-value">-</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">流量占比</span>
+          <span class="metric-value">-</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">访问量</span>
+          <span class="metric-value">-</span>
+        </div>
+        <div class="metric-row">
+          <span class="metric-label">平均访问时长</span>
+          <span class="metric-value">-</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="summary">
+    <h3>🛠️ 附属工具分析</h3>
+    <p><strong>WePhoneShop.es</strong> 拥有专业的附属工具系统 cristal.wephoneshop.es，这是一个钢化膜通用型号在线查询系统，专门为B端客户提供服务。</p>
+    <p><strong>关键优势：</strong></p>
+    <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+      <li><strong>高流量占比</strong>：68.13%的流量占比显示该工具的重要性</li>
+      <li><strong>高访问量</strong>：3,022次访问量证明了工具的实用性</li>
+      <li><strong>长停留时间</strong>：260秒的平均访问时长表明用户深度使用</li>
+      <li><strong>B端服务</strong>：专业的查询系统提升客户服务质量</li>
+    </ul>
+    <p><strong>Apokin.es</strong> 目前没有类似的附属工具，这是WePhoneShop.es在客户服务和专业化方面的独特优势。</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>八、竞争优势分析总结</h2>
+  
+  <div class="strategic-analysis">
+    <div class="analysis-section">
+      <h3>🏆 核心竞争力矩阵</h3>
+      <div class="comparison-grid">
+        <div class="comparison-card wephone">
+          <div class="site-title">WePhoneShop.es 战略定位</div>
+          <div class="strategic-points">
+            <div class="strength-category">
+              <h4>🎯 精准化运营优势</h4>
+              <ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                <li><strong>用户深度参与</strong>：7.3页/访问 + 7:21停留时长，行业领先</li>
+                <li><strong>转化效率优异</strong>：49.19%跳出率，用户粘性极强</li>
+                <li><strong>品牌忠诚度高</strong>：68%直接流量，自主访问意愿强</li>
+              </ul>
+            </div>
+            <div class="strength-category">
+              <h4>🛠️ 服务生态完善</h4>
+              <ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                <li><strong>专业工具支撑</strong>：钢化膜查询系统，B端服务差异化</li>
+                <li><strong>本土市场深耕</strong>：98.5%西班牙用户，区域专精</li>
+                <li><strong>增长势头强劲</strong>：+24%流量增长，发展潜力大</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="comparison-card apokin">
+          <div class="site-title">Apokin.es 战略定位</div>
+          <div class="strategic-points">
+            <div class="strength-category">
+              <h4>🌐 规模化扩张优势</h4>
+              <ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                <li><strong>SEO权威领先</strong>：Authority Score 25 vs 10，搜索引擎信任度高</li>
+                <li><strong>流量规模优势</strong>：3K vs 682月访问量，市场覆盖广</li>
+                <li><strong>关键词矩阵</strong>：7.6K vs 594关键词，内容生态丰富</li>
+              </ul>
+            </div>
+            <div class="strength-category">
+              <h4>📧 营销体系成熟</h4>
+              <ul style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.9rem;">
+                <li><strong>邮件营销活跃</strong>：2-3次/周发送频率，用户关系维护</li>
+                <li><strong>外链建设强</strong>：11K vs 580反向链接，权威性建立</li>
+                <li><strong>自然搜索主导</strong>：40% vs 15%有机流量占比</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <h3>📊 竞争态势深度解析</h3>
+      <div class="competitive-insights">
+        <div class="insight-block">
+          <h4>🔍 市场定位差异化</h4>
+          <p><strong>WePhoneShop.es</strong> 采用"精品化+本土化"策略，通过深度用户体验和专业服务工具建立竞争壁垒。其钢化膜查询系统体现了对B端客户需求的深度理解，68.13%的工具流量占比证明了差异化服务的价值。</p>
+          <p><strong>Apokin.es</strong> 走"规模化+国际化"路线，通过SEO权威性和内容矩阵实现流量规模优势。其邮件营销体系和强大的外链网络展现了成熟的数字营销能力。</p>
+        </div>
+        
+        <div class="insight-block">
+          <h4>⚡ 增长动力分析</h4>
+          <p><strong>WePhoneShop.es</strong> 的增长驱动力来自用户体验优化和品牌忠诚度提升，+24%的增长率配合极低的跳出率，显示其正在建立可持续的竞争优势。</p>
+          <p><strong>Apokin.es</strong> 依靠SEO技术优势和内容营销实现规模扩张，7.6K关键词覆盖和40%自然搜索流量占比体现了其在搜索营销领域的领先地位。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="analysis-section">
+      <h3>🚀 战略发展建议</h3>
+      <div class="strategic-recommendations">
+        <div class="recommendation-block wephone-rec">
+          <h4>📈 WePhoneShop.es 发展路径</h4>
+          <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+            <li><strong>扩展服务生态</strong>：基于钢化膜查询系统成功经验，开发更多专业工具</li>
+            <li><strong>建立邮件营销</strong>：学习Apokin经验，构建用户关系管理体系</li>
+            <li><strong>SEO权威提升</strong>：加强内容建设和外链获取，提高搜索权威性</li>
+            <li><strong>保持用户体验优势</strong>：继续优化转化路径，维持行业领先的用户指标</li>
+          </ul>
+        </div>
+        
+        <div class="recommendation-block apokin-rec">
+          <h4>🎯 Apokin.es 优化方向</h4>
+          <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+            <li><strong>用户体验优化</strong>：学习WePhoneShop的用户粘性策略，降低跳出率</li>
+            <li><strong>开发专业工具</strong>：创建差异化服务工具，提升用户价值</li>
+            <li><strong>深化本土市场</strong>：在保持国际化的同时，加强重点市场深耕</li>
+            <li><strong>转化率优化</strong>：将流量优势转化为更高的用户参与度</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h3>🎯 战略洞察总结</h3>
+      <div class="final-insights">
+        <p><strong>竞争格局：</strong>两个网站代表了数字营销的两种成功模式 - WePhoneShop.es的"精准深耕"与Apokin.es的"规模扩张"。</p>
+        <p><strong>核心差异：</strong>WePhoneShop.es在用户体验和服务专业化方面领先，Apokin.es在SEO技术和营销体系方面占优。</p>
+        <p><strong>发展趋势：</strong>未来竞争将聚焦于如何在保持各自优势的同时，补齐短板实现全面发展。</p>
+        <p><strong>关键成功因素：</strong>用户体验、技术创新、营销效率和服务差异化将成为决定竞争胜负的关键要素。</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+</div>
+
+<script>
+// 权威评分与流量对比图表
+const authorityTrafficCtx = document.getElementById('authorityTrafficChart').getContext('2d');
+new Chart(authorityTrafficCtx, {
+    type: 'scatter',
+    data: {
+        datasets: [{
+            label: 'WePhoneShop.es',
+            data: [{x: 10, y: 682}],
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            pointRadius: 10
+        }, {
+            label: 'Apokin.es',
+            data: [{x: 25, y: 3000}],
+            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            pointRadius: 10
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '权威评分 vs 自然流量分布'
+            },
+            legend: {
+                display: true
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: '权威评分'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: '自然流量（/月）'
+                }
+            }
+        }
+    }
+});
+
+// 地理分布对比图表
+const geoDistributionCtx = document.getElementById('geoDistributionChart').getContext('2d');
+new Chart(geoDistributionCtx, {
+    type: 'bar',
+    data: {
+        labels: ['西班牙', '美国', '墨西哥'],
+        datasets: [{
+            label: 'WePhoneShop.es',
+            data: [98.5, 0.1, 0.1],
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Apokin.es',
+            data: [52.7, 10.6, 0.5],
+            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '地理分布对比 (%)'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: '流量占比 (%)'
+                }
+            }
+        }
+    }
+});
+
+// 流量来源对比图表
+const trafficSourceCtx = document.getElementById('trafficSourceChart').getContext('2d');
+new Chart(trafficSourceCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['直接流量', '自然搜索', '引荐流量', '社交媒体', '付费广告'],
+        datasets: [{
+            label: 'WePhoneShop.es',
+            data: [68, 15, 12, 0, 0],
+            backgroundColor: [
+                'rgba(59, 130, 246, 0.8)',
+                'rgba(59, 130, 246, 0.6)',
+                'rgba(59, 130, 246, 0.4)',
+                'rgba(59, 130, 246, 0.2)',
+                'rgba(59, 130, 246, 0.1)'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'WePhoneShop.es 流量来源分布'
+            }
+        }
+    }
+});
+
+// 关键词意图分布对比图表
+const keywordIntentCtx = document.getElementById('keywordIntentChart').getContext('2d');
+new Chart(keywordIntentCtx, {
+    type: 'radar',
+    data: {
+        labels: ['导航型', '信息型', '商业型', '交易型'],
+        datasets: [{
+            label: 'WePhoneShop.es',
+            data: [51.6, 20.1, 2.0, 26.3],
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 2
+        }, {
+            label: 'Apokin.es',
+            data: [52.7, 0.5, 10.6, 30.6],
+            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '关键词意图分布对比 (%)'
+            }
+        },
+        scales: {
+            r: {
+                beginAtZero: true,
+                max: 60
+            }
+        }
+    }
+});
+
+// 反向链接结构对比图表
+const backlinkCtx = document.getElementById('backlinkChart').getContext('2d');
+new Chart(backlinkCtx, {
+    type: 'bar',
+    data: {
+        labels: ['总反向链接', '引荐域名', 'Follow链接', 'Nofollow链接'],
+        datasets: [{
+            label: 'WePhoneShop.es',
+            data: [580, 75, 485, 96],
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: 'rgba(59, 130, 246, 1)',
+            borderWidth: 1
+        }, {
+            label: 'Apokin.es',
+            data: [11000, 403, 10900, 67],
+            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: '反向链接结构对比'
+            }
+        },
+        scales: {
+            y: {
+                type: 'logarithmic',
+                title: {
+                    display: true,
+                    text: '数量（对数刻度）'
+                }
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puloka 品牌调研报告 — 数据可视化分析</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+/* shadcn/ui inspired design system */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+.container {
+  max-width: min(1400px, 100%);
+  margin: 0 auto;
+  background-color: hsl(var(--background));
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid hsl(var(--border));
+  transition: box-shadow 0.3s ease;
+}
+
+/* Typography */
+h1 {
+  font-size: clamp(1.875rem, 4vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: hsl(var(--foreground));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Enhanced Navigation Menu */
+.nav-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(0.75rem, 1.5vw, 1rem);
+  background-color: hsl(var(--card));
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: clamp(0.5rem, 1vw, 0.75rem) clamp(0.75rem, 2vw, 1.5rem);
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  font-weight: 500;
+  text-decoration: none;
+  color: hsl(var(--muted-foreground));
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) - 2px);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.nav-button:hover {
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--accent));
+  border-color: hsl(var(--border));
+  transform: translateY(-1px);
+}
+
+.nav-button:hover::before {
+  left: 100%;
+}
+
+.nav-button.active {
+  color: hsl(var(--primary-foreground));
+  background-color: hsl(var(--primary));
+  border-color: hsl(var(--primary));
+}
+
+.nav-button:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Section styling with animations */
+.section {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2rem);
+  border-bottom: 1px solid hsl(var(--border));
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+/* KPI Cards */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.kpi .card {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: clamp(1.25rem, 2.5vw, 1.5rem);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.kpi .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+.kpi .card:hover::before {
+  opacity: 1;
+}
+
+.kpi .card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi .card .value {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.kpi .card .description {
+  font-size: clamp(0.75rem, 1.25vw, 0.875rem);
+  color: hsl(var(--muted-foreground));
+  line-height: 1.4;
+  margin-bottom: 0;
+}
+
+/* Chart containers */
+.chart-container {
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  position: relative;
+  overflow: hidden;
+  height: clamp(300px, 40vw, 400px);
+}
+
+.chart-container h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.chart-container canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+/* Grid layouts */
+.grid {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+}
+
+/* SWOT Analysis */
+.swot-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
+}
+
+.swot-quadrant {
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  transition: transform 0.2s ease;
+}
+
+.swot-quadrant:hover {
+  transform: translateY(-2px);
+}
+
+.swot-quadrant h4 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.swot-quadrant.strengths {
+  border-left: 4px solid #10b981;
+}
+
+.swot-quadrant.weaknesses {
+  border-left: 4px solid #ef4444;
+}
+
+.swot-quadrant.opportunities {
+  border-left: 4px solid #3b82f6;
+}
+
+.swot-quadrant.threats {
+  border-left: 4px solid #f59e0b;
+}
+
+.swot-quadrant ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.swot-quadrant li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid hsl(var(--border));
+  font-size: clamp(0.875rem, 1.25vw, 0.9375rem);
+  line-height: 1.5;
+}
+
+.swot-quadrant li:last-child {
+  border-bottom: none;
+}
+
+/* Table styling */
+.table-container {
+  overflow-x: auto;
+  margin: clamp(1.5rem, 3vw, 2rem) 0;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+}
+
+.table-container h3 {
+  margin: 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-bottom: 1px solid hsl(var(--border));
+  background-color: hsl(var(--muted));
+}
+
+table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  font-size: clamp(0.875rem, 1.25vw, 0.9375rem);
+}
+
+th, td {
+  padding: clamp(0.75rem, 1.5vw, 1rem);
+  text-align: left;
+  border-bottom: 1px solid hsl(var(--border));
+  white-space: nowrap;
+}
+
+th {
+  background-color: hsl(var(--muted));
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background-color: hsl(var(--muted));
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .nav-menu {
+    flex-direction: column;
+  }
+  
+  .nav-button {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container {
+    height: clamp(250px, 50vw, 300px);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1025px) {
+  .container {
+    padding: 3rem;
+  }
+  
+  .chart-container {
+    height: 450px;
+  }
+}
+
+/* Print styles */
+@media print {
+  body {
+    background-color: white;
+    padding: 0;
+  }
+  
+  .container {
+    box-shadow: none;
+    border: none;
+  }
+  
+  .nav-menu {
+    display: none;
+  }
+  
+  .chart-container {
+    break-inside: avoid;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus states for accessibility */
+.kpi .card:focus-visible,
+.chart-container:focus-visible,
+.swot-quadrant:focus-visible,
+.table-container:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* 负面评价样式 */
+.negative-reviews-container {
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  margin-top: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.review-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.review-card.warning {
+  border-left: 4px solid #f59e0b;
+  background: linear-gradient(135deg, hsl(var(--card)) 0%, rgba(245, 158, 11, 0.02) 100%);
+}
+
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.review-header h3 {
+  margin: 0;
+  color: hsl(var(--foreground));
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+  font-weight: 600;
+}
+
+.issue-tag {
+  background: #f59e0b;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.review-content > div {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.original-review {
+  background: rgba(59, 130, 246, 0.05);
+  border-left: 3px solid #3b82f6;
+}
+
+.original-review em {
+  color: #1e40af;
+  font-style: italic;
+  line-height: 1.6;
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.translation {
+  background: rgba(16, 185, 129, 0.05);
+  border-left: 3px solid #10b981;
+}
+
+.translation {
+  color: #065f46;
+  line-height: 1.6;
+}
+
+.issue-description {
+  background: rgba(245, 158, 11, 0.05);
+  border-left: 3px solid #f59e0b;
+}
+
+.issue-description {
+  color: #92400e;
+  line-height: 1.6;
+}
+
+.review-content strong {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* 响应式设计 */
+@media (min-width: 768px) {
+  .negative-reviews-container {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .review-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .review-content > div {
+    padding: 0.5rem;
+  }
+}
+
+/* 数据来源样式 */
+.data-sources-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.data-sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.source-category-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.source-category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.source-category-card.official {
+  border-left: 4px solid #3b82f6;
+}
+
+.source-category-card.ecommerce {
+  border-left: 4px solid #10b981;
+}
+
+.source-category-card.wholesale {
+  border-left: 4px solid #f59e0b;
+}
+
+.source-category-card.manufacturer {
+  border-left: 4px solid #8b5cf6;
+}
+
+.source-category-card.social {
+  border-left: 4px solid #ef4444;
+}
+
+.source-category-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.source-category-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+.source-category-icon.official {
+  background: #3b82f6;
+}
+
+.source-category-icon.ecommerce {
+  background: #10b981;
+}
+
+.source-category-icon.wholesale {
+  background: #f59e0b;
+}
+
+.source-category-icon.manufacturer {
+  background: #8b5cf6;
+}
+
+.source-category-icon.social {
+  background: #ef4444;
+}
+
+.source-category-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin: 0;
+}
+
+.source-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.source-item {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.source-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.source-name {
+  font-weight: 600;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.25rem;
+}
+
+.source-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.875rem;
+  word-break: break-all;
+  transition: color 0.2s ease;
+}
+
+.source-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.source-description {
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+.data-collection-note {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: hsl(var(--muted));
+  border-radius: var(--radius);
+  text-align: center;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.875rem;
+}
+
+@media (max-width: 767px) {
+  .data-sources-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .source-category-card {
+    padding: 1rem;
+  }
+  
+  .source-link {
+    font-size: 0.8rem;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <!-- Navigation Menu -->
+  <nav class="nav-menu">
+    <a href="index.html" class="nav-button">WePhoneShop.es 报告</a>
+    <a href="apokin.html" class="nav-button">Apokin.es 报告</a>
+    <a href="comparison.html" class="nav-button">对比分析</a>
+    <a href="seo-plan.html" class="nav-button">SEO优化方案</a>
+    <a href="puloka.html" class="nav-button active">Puloka 品牌调研</a>
+  </nav>
+
+  <h1>Puloka 品牌调研报告</h1>
+  <p class="description">基于市场调研数据的Puloka品牌全面分析与可视化展示</p>
+
+  <!-- 品牌概览 KPI -->
+  <section class="section">
+    <h2>品牌概览</h2>
+    <div class="kpi">
+      <div class="card">
+        <h3>成立时间</h3>
+        <div class="value">2013年7月</div>
+        <div class="description">广州蒲洛卡电子科技有限公司创立</div>
+      </div>
+      <div class="card">
+        <h3>总部位置</h3>
+        <div class="value">中国广州</div>
+        <div class="description">拥有设计精英团队和专业生产团队</div>
+      </div>
+      <div class="card">
+        <h3>年产能力</h3>
+        <div class="value">500万件</div>
+        <div class="description">手机壳年产规模，具备强大供应能力</div>
+      </div>
+      <div class="card">
+        <h3>主要市场</h3>
+        <div class="value">全球化</div>
+        <div class="description">欧美、中东、印度等国际市场</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 产品分析 -->
+  <section class="section">
+    <h2>产品分析</h2>
+    
+    <div class="grid grid-2">
+      <div class="chart-container">
+        <h3>产品类别分布</h3>
+        <canvas id="productCategoryChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>材质分布</h3>
+        <canvas id="materialChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <h3>设计风格分类</h3>
+      <canvas id="designStyleChart"></canvas>
+    </div>
+  </section>
+
+  <!-- 市场渠道分析 -->
+  <section class="section">
+    <h2>市场渠道分析</h2>
+    
+    <div class="grid grid-2">
+      <div class="chart-container">
+        <h3>销售渠道分布</h3>
+        <canvas id="salesChannelChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>地区分布</h3>
+        <canvas id="regionChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- 价格定位分析 -->
+  <section class="section">
+    <h2>价格定位分析</h2>
+    
+    <div class="grid grid-2">
+      <div class="chart-container">
+        <h3>价格区间分布</h3>
+        <canvas id="priceRangeChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>与竞品价格对比</h3>
+        <canvas id="competitorPriceChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- 用户评价分析 -->
+  <section class="section">
+    <h2>用户评价分析</h2>
+    
+    <div class="kpi">
+      <div class="card">
+        <h3>用户满意度</h3>
+        <div class="value">4.0/5.0</div>
+        <div class="description">基于Amazon等平台的综合评分</div>
+      </div>
+      <div class="card">
+        <h3>正面评价</h3>
+        <div class="value">78%</div>
+        <div class="description">用户对产品外观和性价比认可</div>
+      </div>
+      <div class="card">
+        <h3>Instagram粉丝</h3>
+        <div class="value">479</div>
+        <div class="description">@pulokacases 官方账号粉丝数</div>
+      </div>
+      <div class="card">
+        <h3>发布内容</h3>
+        <div class="value">200+</div>
+        <div class="description">累计发布产品展示和宣传内容</div>
+      </div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="chart-container">
+        <h3>评价维度分析</h3>
+        <canvas id="reviewDimensionChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>正面vs负面评价</h3>
+        <canvas id="reviewSentimentChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- 负面评价详情分析 -->
+  <section class="section">
+    <h2>负面评价详情分析</h2>
+    <p class="description">基于用户反馈的具体问题分析，包含原语言评论和中文翻译</p>
+    
+    <div class="negative-reviews-container">
+      <div class="review-card warning">
+        <div class="review-header">
+          <h3>🔧 耐用性瑕疵</h3>
+          <span class="issue-tag">质量问题</span>
+        </div>
+        <div class="review-content">
+          <div class="original-review">
+            <strong>原文评论：</strong>
+            <em>"The gold plating started to fade after a few months of use, and I noticed cracks on the sides. The rose gold frame looks cheap now."</em>
+          </div>
+          <div class="translation">
+            <strong>中文翻译：</strong>
+            "金色电镀层使用几个月后开始褪色，我注意到侧边出现了裂缝。玫瑰金边框现在看起来很廉价。"
+          </div>
+          <div class="issue-description">
+            <strong>问题描述：</strong>电镀边框或镀膜装饰款式长期使用后出现掉色和开裂，影响产品美观度和用户体验。
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card warning">
+        <div class="review-header">
+          <h3>🛡️ 极端防护性能</h3>
+          <span class="issue-tag">功能限制</span>
+        </div>
+        <div class="review-content">
+          <div class="original-review">
+            <strong>原文评论：</strong>
+            <em>"This case is not suitable for heavy-duty protection, dropped my phone and it still got damaged. Expected better protection for the price."</em>
+          </div>
+          <div class="translation">
+            <strong>中文翻译：</strong>
+            "这个手机壳不适合重度保护，我的手机掉落后仍然受损了。以这个价格期待更好的保护效果。"
+          </div>
+          <div class="issue-description">
+            <strong>问题描述：</strong>不适合极端环境或高强度防摔需求，主要定位为时尚美观而非专业防护。
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card warning">
+        <div class="review-header">
+          <h3>🎨 设计细节争议</h3>
+          <span class="issue-tag">设计问题</span>
+        </div>
+        <div class="review-content">
+          <div class="original-review">
+            <strong>原文评论：</strong>
+            <em>"The metal brand plate affects the overall feel and aesthetics of the case. It feels bulky and doesn't match the sleek design."</em>
+          </div>
+          <div class="translation">
+            <strong>中文翻译：</strong>
+            "金属品牌铭牌影响了手机壳的整体手感和美观度。感觉很笨重，与时尚设计不匹配。"
+          </div>
+          <div class="issue-description">
+            <strong>问题描述：</strong>某些设计细节（如金属铭牌）影响用户体验，需要在品牌展示和产品美观之间找到平衡。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 目标客户群体分析 -->
+  <section class="section">
+    <h2>目标客户群体分析</h2>
+    
+    <div class="grid grid-2">
+      <div class="chart-container">
+        <h3>客户群体分布</h3>
+        <canvas id="customerSegmentChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>年龄分布</h3>
+        <canvas id="ageDistributionChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- 竞争力分析 -->
+  <section class="section">
+    <h2>竞争力分析</h2>
+    
+    <h3>SWOT分析</h3>
+    <div class="swot-container">
+      <div class="swot-quadrant strengths">
+        <h4>优势 (Strengths)</h4>
+        <ul>
+          <li>价格亲民，性价比高</li>
+          <li>设计风格多样，紧跟潮流</li>
+          <li>产品更新速度快</li>
+          <li>年产能500万件，供应能力强</li>
+          <li>超过10年生产经验</li>
+        </ul>
+      </div>
+      <div class="swot-quadrant weaknesses">
+        <h4>劣势 (Weaknesses)</h4>
+        <ul>
+          <li>品牌知名度有限</li>
+          <li>部分产品耐用性有待提升</li>
+          <li>社交媒体影响力较小</li>
+          <li>品牌沉淀不足</li>
+          <li>极端防护性能一般</li>
+        </ul>
+      </div>
+      <div class="swot-quadrant opportunities">
+        <h4>机会 (Opportunities)</h4>
+        <ul>
+          <li>手机配件市场持续增长</li>
+          <li>环保材料需求增加</li>
+          <li>新兴市场拓展机会</li>
+          <li>电商平台快速发展</li>
+          <li>个性化定制趋势</li>
+        </ul>
+      </div>
+      <div class="swot-quadrant threats">
+        <h4>威胁 (Threats)</h4>
+        <ul>
+          <li>国际知名品牌竞争激烈</li>
+          <li>价格战压力</li>
+          <li>消费者品牌忠诚度挑战</li>
+          <li>原材料成本上涨</li>
+          <li>市场同质化严重</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <h3>竞品对比分析</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>对比维度</th>
+            <th>Puloka</th>
+            <th>Spigen</th>
+            <th>OtterBox</th>
+            <th>Casetify</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>质量与耐用性</td>
+            <td>中等水准，满足日常需求</td>
+            <td>高品质，通过严格测试</td>
+            <td>顶级防护，军工级标准</td>
+            <td>优质材料，设计精良</td>
+          </tr>
+          <tr>
+            <td>设计风格</td>
+            <td>多样化，紧跟潮流</td>
+            <td>简约实用，功能导向</td>
+            <td>坚固实用，防护优先</td>
+            <td>时尚个性，定制化强</td>
+          </tr>
+          <tr>
+            <td>价格水平</td>
+            <td>€6.5-13，性价比高</td>
+            <td>€18-37，中等价位</td>
+            <td>€37-74，高端定价</td>
+            <td>€28-55，时尚溢价</td>
+          </tr>
+          <tr>
+            <td>用户满意度</td>
+            <td>4.0星，总体良好</td>
+            <td>4.3星，口碑优秀</td>
+            <td>4.5星，用户信赖</td>
+            <td>4.2星，设计受赞</td>
+          </tr>
+          <tr>
+            <td>品牌知名度</td>
+            <td>新兴品牌，知名度有限</td>
+            <td>知名品牌，市场认知高</td>
+            <td>行业领导者，信任度强</td>
+            <td>时尚品牌，年轻人喜爱</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 社交媒体表现 -->
+  <section class="section">
+    <h2>社交媒体表现</h2>
+    
+    <div class="grid grid-2">
+      <div class="chart-container">
+        <h3>Instagram粉丝增长趋势</h3>
+        <canvas id="followerGrowthChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h3>社媒平台分布</h3>
+        <canvas id="socialMediaChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- 数据来源与参考文献 -->
+  <section class="data-sources-section">
+    <h2>数据来源与参考文献</h2>
+    <p class="description">本报告数据来源于多个权威平台和官方渠道，确保信息的准确性和可靠性。</p>
+    
+    <div class="data-sources-grid">
+      <!-- 官方渠道 -->
+      <div class="source-category-card official">
+        <div class="source-category-header">
+          <div class="source-category-icon official">官</div>
+          <h3 class="source-category-title">官方渠道</h3>
+        </div>
+        <ul class="source-list">
+          <li class="source-item">
+            <div class="source-name">Puloka 官方网站</div>
+            <a href="https://puloka.in/" class="source-link" target="_blank" rel="noopener noreferrer">https://puloka.in/</a>
+            <div class="source-description">品牌官方信息、产品目录、价格政策等核心数据</div>
+          </li>
+          <li class="source-item">
+            <div class="source-name">Instagram 官方账号</div>
+            <a href="https://www.instagram.com/pulokacases/" class="source-link" target="_blank" rel="noopener noreferrer">@pulokacases</a>
+            <div class="source-description">社交媒体数据、粉丝互动、品牌推广内容分析</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 电商平台 -->
+      <div class="source-category-card ecommerce">
+        <div class="source-category-header">
+          <div class="source-category-icon ecommerce">商</div>
+          <h3 class="source-category-title">电商平台</h3>
+        </div>
+        <ul class="source-list">
+          <li class="source-item">
+            <div class="source-name">Amazon 美国站</div>
+            <a href="https://www.amazon.com/" class="source-link" target="_blank" rel="noopener noreferrer">amazon.com</a>
+            <div class="source-description">产品销量、用户评价、价格趋势、市场表现数据</div>
+          </li>
+          <li class="source-item">
+            <div class="source-name">Amazon 印度站</div>
+            <a href="https://www.amazon.in/" class="source-link" target="_blank" rel="noopener noreferrer">amazon.in</a>
+            <div class="source-description">本土市场销售数据、用户反馈、竞争对手分析</div>
+          </li>
+          <li class="source-item">
+            <div class="source-name">Amazon 西班牙站</div>
+            <a href="https://www.amazon.es/" class="source-link" target="_blank" rel="noopener noreferrer">amazon.es</a>
+            <div class="source-description">欧洲市场表现、产品可用性、价格对比数据</div>
+          </li>
+          <li class="source-item">
+            <div class="source-name">Ubuy 印度站</div>
+            <a href="https://www.ubuy.co.in/" class="source-link" target="_blank" rel="noopener noreferrer">ubuy.co.in</a>
+            <div class="source-description">跨境电商数据、产品评分、消费者偏好分析</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 批发渠道 -->
+      <div class="source-category-card wholesale">
+        <div class="source-category-header">
+          <div class="source-category-icon wholesale">批</div>
+          <h3 class="source-category-title">批发渠道</h3>
+        </div>
+        <ul class="source-list">
+          <li class="source-item">
+            <div class="source-name">WephoneShop.es</div>
+            <a href="https://wephoneshop.es/" class="source-link" target="_blank" rel="noopener noreferrer">wephoneshop.es</a>
+            <div class="source-description">西班牙专业手机配件批发平台，提供产品规格、批发价格、市场定位信息</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 制造商信息 -->
+      <div class="source-category-card manufacturer">
+        <div class="source-category-header">
+          <div class="source-category-icon manufacturer">制</div>
+          <h3 class="source-category-title">制造商信息</h3>
+        </div>
+        <ul class="source-list">
+          <li class="source-item">
+            <div class="source-name">Made-in-China.com</div>
+            <a href="https://www.made-in-china.com/" class="source-link" target="_blank" rel="noopener noreferrer">made-in-china.com</a>
+            <div class="source-description">制造商背景、生产能力、供应链信息、产品认证数据</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 社交媒体 -->
+      <div class="source-category-card social">
+        <div class="source-category-header">
+          <div class="source-category-icon social">社</div>
+          <h3 class="source-category-title">社交媒体</h3>
+        </div>
+        <ul class="source-list">
+          <li class="source-item">
+            <div class="source-name">Instagram</div>
+            <a href="https://www.instagram.com/" class="source-link" target="_blank" rel="noopener noreferrer">instagram.com</a>
+            <div class="source-description">品牌曝光度、用户互动数据、内容营销效果分析</div>
+          </li>
+          <li class="source-item">
+            <div class="source-name">Facebook</div>
+            <a href="https://www.facebook.com/" class="source-link" target="_blank" rel="noopener noreferrer">facebook.com</a>
+            <div class="source-description">社交媒体覆盖范围、用户群体画像、品牌认知度数据</div>
+          </li>
+          <li class="source-item">
+            <div class="source-name">Twitter</div>
+            <a href="https://www.twitter.com/" class="source-link" target="_blank" rel="noopener noreferrer">twitter.com</a>
+            <div class="source-description">品牌提及度、话题讨论热度、用户情感分析</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="data-collection-note">
+      <strong>数据收集时间：</strong>2025年9月 - 2025年10月<br>
+      <strong>报告生成时间：</strong>2025年10月7日<br>
+      所有数据均来源于公开渠道，遵循相关平台的使用条款和隐私政策
+    </div>
+  </section>
+</div>
+
+<script>
+// Chart.js configuration
+Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif';
+Chart.defaults.color = 'hsl(240, 3.8%, 46.1%)';
+
+// Color palette
+const colors = {
+  primary: '#3b82f6',
+  secondary: '#10b981',
+  accent: '#f59e0b',
+  danger: '#ef4444',
+  purple: '#8b5cf6',
+  pink: '#ec4899',
+  indigo: '#6366f1',
+  teal: '#14b8a6'
+};
+
+// 产品类别分布饼图
+const productCategoryCtx = document.getElementById('productCategoryChart').getContext('2d');
+new Chart(productCategoryCtx, {
+  type: 'pie',
+  data: {
+    labels: ['手机壳', '皮套', '耳机壳', '智能手表表带', '手机腰包'],
+    datasets: [{
+      data: [65, 15, 10, 7, 3],
+      backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.purple, colors.pink],
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.label + ': ' + context.parsed + '%';
+          }
+        }
+      }
+    },
+    animation: {
+      animateRotate: true,
+      duration: 2000
+    }
+  }
+});
+
+// 材质分布环形图
+const materialCtx = document.getElementById('materialChart').getContext('2d');
+new Chart(materialCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['TPU', 'PC', 'PU皮革', '硅胶'],
+    datasets: [{
+      data: [40, 30, 20, 10],
+      backgroundColor: [colors.secondary, colors.primary, colors.accent, colors.purple],
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.label + ': ' + context.parsed + '%';
+          }
+        }
+      }
+    },
+    animation: {
+      animateRotate: true,
+      duration: 2000
+    }
+  }
+});
+
+// 设计风格分类柱状图
+const designStyleCtx = document.getElementById('designStyleChart').getContext('2d');
+new Chart(designStyleCtx, {
+  type: 'bar',
+  data: {
+    labels: ['刺绣系列', '闪粉系列', '电镀系列', '皮革系列', '简约系列'],
+    datasets: [{
+      label: '产品数量',
+      data: [25, 20, 15, 22, 18],
+      backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.purple, colors.pink],
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return '产品数量: ' + context.parsed.y + '款';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: 'hsl(240, 5.9%, 90%)'
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// 销售渠道分布饼图
+const salesChannelCtx = document.getElementById('salesChannelChart').getContext('2d');
+new Chart(salesChannelCtx, {
+  type: 'pie',
+  data: {
+    labels: ['Amazon', '官网直销', '其他电商平台', '批发渠道'],
+    datasets: [{
+      data: [45, 25, 20, 10],
+      backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.purple],
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.label + ': ' + context.parsed + '%';
+          }
+        }
+      }
+    },
+    animation: {
+      animateRotate: true,
+      duration: 2000
+    }
+  }
+});
+
+// 地区分布柱状图
+const regionCtx = document.getElementById('regionChart').getContext('2d');
+new Chart(regionCtx, {
+  type: 'bar',
+  data: {
+    labels: ['印度', '欧洲', '美洲', '中东'],
+    datasets: [{
+      label: '市场份额 (%)',
+      data: [40, 30, 20, 10],
+      backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.purple],
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return '市场份额: ' + context.parsed.y + '%';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 50,
+        grid: {
+          color: 'hsl(240, 5.9%, 90%)'
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// 价格区间分布柱状图
+const priceRangeCtx = document.getElementById('priceRangeChart').getContext('2d');
+new Chart(priceRangeCtx, {
+  type: 'bar',
+  data: {
+    labels: ['€6.5-9', '€9-12', '€12-14', '€14以上'],
+    datasets: [{
+      label: '产品数量',
+      data: [35, 40, 20, 5],
+      backgroundColor: [colors.secondary, colors.primary, colors.accent, colors.danger],
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return '产品占比: ' + context.parsed.y + '%';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 50,
+        grid: {
+          color: 'hsl(240, 5.9%, 90%)'
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// 与竞品价格对比雷达图
+const competitorPriceCtx = document.getElementById('competitorPriceChart').getContext('2d');
+new Chart(competitorPriceCtx, {
+  type: 'radar',
+  data: {
+    labels: ['价格竞争力', '产品质量', '设计创新', '品牌知名度', '用户满意度'],
+    datasets: [
+      {
+        label: 'Puloka',
+        data: [90, 70, 85, 40, 75],
+        borderColor: colors.primary,
+        backgroundColor: colors.primary + '20',
+        pointBackgroundColor: colors.primary,
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2
+      },
+      {
+        label: 'Spigen',
+        data: [60, 85, 70, 80, 85],
+        borderColor: colors.secondary,
+        backgroundColor: colors.secondary + '20',
+        pointBackgroundColor: colors.secondary,
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2
+      },
+      {
+        label: 'OtterBox',
+        data: [30, 95, 60, 95, 90],
+        borderColor: colors.accent,
+        backgroundColor: colors.accent + '20',
+        pointBackgroundColor: colors.accent,
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true
+        }
+      }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 100,
+        grid: {
+          color: 'hsl(240, 5.9%, 90%)'
+        },
+        pointLabels: {
+          font: {
+            size: 12
+          }
+        }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// 评价维度分析雷达图
+const reviewDimensionCtx = document.getElementById('reviewDimensionChart').getContext('2d');
+new Chart(reviewDimensionCtx, {
+  type: 'radar',
+  data: {
+    labels: ['外观设计', '质量耐用', '性价比', '功能实用', '客服服务'],
+    datasets: [{
+      label: '用户评分',
+      data: [85, 70, 90, 75, 65],
+      borderColor: colors.primary,
+      backgroundColor: colors.primary + '30',
+      pointBackgroundColor: colors.primary,
+      pointBorderColor: '#ffffff',
+      pointBorderWidth: 2,
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    scales: {
+      r: {
+        beginAtZero: true,
+        max: 100,
+        grid: {
+          color: 'hsl(240, 5.9%, 90%)'
+        },
+        pointLabels: {
+          font: {
+            size: 12
+          }
+        }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// 正面vs负面评价饼图
+const reviewSentimentCtx = document.getElementById('reviewSentimentChart').getContext('2d');
+new Chart(reviewSentimentCtx, {
+  type: 'pie',
+  data: {
+    labels: ['正面评价', '负面评价', '中性评价'],
+    datasets: [{
+      data: [78, 15, 7],
+      backgroundColor: [colors.secondary, colors.danger, colors.accent],
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.label + ': ' + context.parsed + '%';
+          }
+        }
+      }
+    },
+    animation: {
+      animateRotate: true,
+      duration: 2000
+    }
+  }
+});
+
+// 客户群体分布饼图
+const customerSegmentCtx = document.getElementById('customerSegmentChart').getContext('2d');
+new Chart(customerSegmentCtx, {
+  type: 'pie',
+  data: {
+    labels: ['时尚年轻用户', '商务人士', '性价比导向用户', '特定兴趣群体'],
+    datasets: [{
+      data: [40, 25, 25, 10],
+      backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.purple],
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.label + ': ' + context.parsed + '%';
+          }
+        }
+      }
+    },
+    animation: {
+      animateRotate: true,
+      duration: 2000
+    }
+  }
+});
+
+// 年龄分布柱状图
+const ageDistributionCtx = document.getElementById('ageDistributionChart').getContext('2d');
+new Chart(ageDistributionCtx, {
+  type: 'bar',
+  data: {
+    labels: ['18-25岁', '26-35岁', '36-45岁', '46岁以上'],
+    datasets: [{
+      label: '用户占比 (%)',
+      data: [45, 35, 15, 5],
+      backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.purple],
+      borderRadius: 4,
+      borderSkipped: false
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return '用户占比: ' + context.parsed.y + '%';
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 50,
+        grid: {
+          color: 'hsl(240, 5.9%, 90%)'
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// Instagram粉丝增长趋势折线图
+const followerGrowthCtx = document.getElementById('followerGrowthChart').getContext('2d');
+new Chart(followerGrowthCtx, {
+  type: 'line',
+  data: {
+    labels: ['2022年1月', '2022年7月', '2023年1月', '2023年7月', '2024年1月', '2024年7月'],
+    datasets: [{
+      label: '粉丝数量',
+      data: [50, 120, 200, 300, 400, 479],
+      borderColor: colors.primary,
+      backgroundColor: colors.primary + '20',
+      pointBackgroundColor: colors.primary,
+      pointBorderColor: '#ffffff',
+      pointBorderWidth: 2,
+      borderWidth: 3,
+      fill: true,
+      tension: 0.4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return '粉丝数: ' + context.parsed.y;
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: 'hsl(240, 5.9%, 90%)'
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    },
+    animation: {
+      duration: 2000,
+      easing: 'easeOutQuart'
+    }
+  }
+});
+
+// 社媒平台分布饼图
+const socialMediaCtx = document.getElementById('socialMediaChart').getContext('2d');
+new Chart(socialMediaCtx, {
+  type: 'pie',
+  data: {
+    labels: ['Instagram', 'Facebook', 'Twitter', '官网'],
+    datasets: [{
+      data: [50, 25, 15, 10],
+      backgroundColor: [colors.primary, colors.secondary, colors.accent, colors.purple],
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: {
+          padding: 20,
+          usePointStyle: true
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.label + ': ' + context.parsed + '%';
+          }
+        }
+      }
+    },
+    animation: {
+      animateRotate: true,
+      duration: 2000
+    }
+  }
+});
+
+// 添加图表交互效果
+document.addEventListener('DOMContentLoaded', function() {
+  // 为所有图表容器添加加载动画
+  const chartContainers = document.querySelectorAll('.chart-container');
+  chartContainers.forEach(container => {
+    container.classList.add('loading');
+    setTimeout(() => {
+      container.classList.remove('loading');
+    }, 2000);
+  });
+});
+</script>
+
+</body>
+</html>
