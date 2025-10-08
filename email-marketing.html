@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WePhoneShop 邮件营销方案</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+/* 引入统一响应式设计系统 */
+@import url('responsive-system.css');
+
+/* shadcn/ui inspired design system */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+  --success: 142 76% 36%;
+  --warning: 38 92% 50%;
+  --brand: 0 84% 60%;
+}
+
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  padding: 1.5rem;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: hsl(var(--background));
+  padding: 2rem;
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border: 1px solid hsl(var(--border));
+}
+
+/* Typography */
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: hsl(var(--foreground));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.description {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Section styling with animations */
+.section {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2rem);
+  border-bottom: 1px solid hsl(var(--border));
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+/* Enhanced Navigation Menu */
+.nav-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 auto 1.5rem auto;
+  padding: 0.75rem;
+  background-color: hsl(var(--card));
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  max-width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.nav-menu.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+}
+
+.nav-menu.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: none;
+  padding: 2rem;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+}
+
+.nav-menu.overlay.show {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.625rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 2px);
+  transition: all 0.2s ease;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.nav-menu.overlay .nav-button {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  min-width: 200px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideInUp 0.5s ease forwards;
+}
+
+.nav-menu.overlay .nav-button:nth-child(1) { animation-delay: 0.1s; }
+.nav-menu.overlay .nav-button:nth-child(2) { animation-delay: 0.2s; }
+.nav-menu.overlay .nav-button:nth-child(3) { animation-delay: 0.3s; }
+.nav-menu.overlay .nav-button:nth-child(4) { animation-delay: 0.4s; }
+.nav-menu.overlay .nav-button:nth-child(5) { animation-delay: 0.5s; }
+.nav-menu.overlay .nav-button:nth-child(6) { animation-delay: 0.6s; }
+
+.nav-button:hover {
+  background-color: hsl(var(--accent));
+  border-color: hsl(var(--foreground));
+}
+
+.nav-menu.overlay .nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.nav-button.active {
+  color: white;
+  background-color: #1a1a1a;
+  border-color: #1a1a1a;
+}
+
+.nav-menu.overlay .nav-button.active {
+  background-color: rgba(255, 59, 48, 0.8);
+  border-color: rgba(255, 59, 48, 1);
+}
+
+.nav-button:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Hamburger Menu */
+.hamburger-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.hamburger-container.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.hamburger-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgb(0 0 0 / 0.15);
+}
+
+.hamburger-btn.active {
+  background: rgba(255, 59, 48, 0.95);
+  border-color: rgba(255, 59, 48, 1);
+}
+
+.hamburger-btn.active .hamburger-icon span {
+  background-color: white;
+}
+
+.hamburger-btn.active .hamburger-text {
+  color: white;
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hamburger-icon span {
+  width: 20px;
+  height: 2px;
+  background-color: hsl(var(--foreground));
+  border-radius: 1px;
+  transition: all 0.2s ease;
+}
+
+.hamburger-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: hsl(var(--foreground));
+  transition: all 0.2s ease;
+}
+
+/* Cards */
+.card {
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-1px);
+}
+
+/* KPI Cards */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: clamp(0.75rem, 2vw, 1rem);
+  margin: clamp(1rem, 2vw, 1.5rem) 0;
+}
+
+.kpi .card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.kpi .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.kpi .card:hover {
+  box-shadow: 0 8px 25px -8px rgb(0 0 0 / 0.15), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-2px);
+}
+
+.kpi .card:hover::before {
+  opacity: 1;
+}
+
+.kpi .label {
+  font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+  font-weight: 500;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpi .value {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Grid layouts */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Chart containers */
+.chart-container {
+  position: relative;
+  height: 300px;
+  margin: 1rem 0;
+}
+
+.chart-small {
+  height: 200px;
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  margin: 1rem 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+th, td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+th {
+  background-color: hsl(var(--muted));
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background-color: hsl(var(--muted) / 0.5);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  border: 1px solid;
+}
+
+.badge-primary {
+  background-color: #FF3B30;
+  color: white;
+  border-color: #FF3B30;
+}
+
+.badge-success {
+  background-color: hsl(var(--success));
+  color: white;
+  border-color: hsl(var(--success));
+}
+
+.badge-warning {
+  background-color: hsl(var(--warning));
+  color: white;
+  border-color: hsl(var(--warning));
+}
+
+.badge-secondary {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  border-color: hsl(var(--border));
+}
+
+/* Lists */
+.list-clean {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-clean li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid hsl(var(--border) / 0.5);
+}
+
+.list-clean li:last-child {
+  border-bottom: none;
+}
+
+/* Code blocks */
+.code-block {
+  background-color: hsl(var(--muted));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  white-space: pre-wrap;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Text wrapping and overflow handling */
+* {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.card p, .card li, td, th {
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+  
+  .kpi {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+  
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .grid-2, .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+  
+  table {
+    font-size: 0.75rem;
+    min-width: 500px;
+  }
+  
+  table th,
+  table td {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.25rem;
+  }
+  
+  .container {
+    padding: 0.75rem;
+  }
+  
+  .kpi {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    padding: 0.75rem;
+  }
+  
+  .chart-container {
+    height: 200px;
+  }
+  
+  table {
+    font-size: 0.7rem;
+    min-width: 400px;
+  }
+  
+  table th,
+  table td {
+    padding: 0.375rem 0.25rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .card {
+    padding: 0.5rem;
+  }
+  
+  table {
+    font-size: 0.65rem;
+    min-width: 280px;
+  }
+  
+  table th,
+  table td {
+    padding: 0.25rem;
+  }
+}
+  </style>
+</head>
+<body>
+<!-- Hamburger Menu Button -->
+<div class="hamburger-container">
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="菜单栏">
+    <div class="hamburger-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <span class="hamburger-text">菜单栏</span>
+  </button>
+</div>
+
+<!-- Overlay Navigation Menu for Hamburger -->
+<nav class="nav-menu overlay" id="navMenuOverlay">
+  <a href="index.html" class="nav-button">首页</a>
+  <a href="wephone.html" class="nav-button">WePhoneShop.es 报告</a>
+     <a href="apokin.html" class="nav-button">Apokin.es 报告</a>
+     <a href="comparison.html" class="nav-button">对比分析</a>
+     <a href="seo-plan.html" class="nav-button">SEO优化方案</a>
+     <a href="email-marketing.html" class="nav-button active">邮件营销方案</a>
+     <a href="puloka.html" class="nav-button">Puloka 品牌调研</a>
+</nav>
+
+<div class="container">
+<!-- Normal Navigation Menu -->
+<nav class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-button">首页</a>
+                    <a href="wephone.html" class="nav-button">WePhoneShop.es 报告</a>
+                    <a href="apokin.html" class="nav-button">Apokin.es 报告</a>
+                    <a href="comparison.html" class="nav-button">对比分析</a>
+                    <a href="seo-plan.html" class="nav-button">SEO优化方案</a>
+                    <a href="email-marketing.html" class="nav-button active">邮件营销方案</a>
+                    <a href="puloka.html" class="nav-button">Puloka 品牌调研</a>
+                </nav>
+
+    <!-- Header -->
+    <header class="section">
+      <h1>WePhoneShop 邮件营销方案</h1>
+      <p class="description">
+        聚焦批发客户、潜在客户与欧洲分销商 · 固定节奏执行 · 以邮件带动月度批发订单 <strong>≥10%</strong> 增长
+      </p>
+    </header>
+
+    <!-- 总体目标 -->
+    <section class="section">
+      <h2>一、总体目标（Objectives）</h2>
+      <div class="kpi">
+        <div class="card">
+          <div class="value">复购率 ↑</div>
+          <div class="label">将一次性客户转化为长期合作商</div>
+        </div>
+        <div class="card">
+          <div class="value">品牌认知 ↑</div>
+          <div class="label">树立"西班牙专业手机配件供应商"形象</div>
+        </div>
+        <div class="card">
+          <div class="value">≥10%</div>
+          <div class="label">每月由邮件促销带来的额外批发订单</div>
+        </div>
+        <div class="card">
+          <div class="value">关系强化</div>
+          <div class="label">定期发布新品/价目/库存/行业资讯</div>
+        </div>
+        <div class="card">
+          <div class="value">欧洲拓展</div>
+          <div class="label">建立葡语/法语等欧洲语系客户库</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 客户分组策略 -->
+    <section class="section">
+      <h2>二、客户分组与数据库策略（Segmentation）</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>🏪 B2B 批发客户</h3>
+          <p class="description">手机配件零售店、维修店、线上卖家</p>
+          <ul class="list-clean">
+            <li><strong>邮件类型：</strong>批发价更新 / 新品目录 / 库存提醒 / 节日促销</li>
+            <li><strong>数据来源：</strong>订单、网站注册、WhatsApp</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🧾 潜在客户</h3>
+          <p class="description">询价未下单、放弃购物车、展会名录</p>
+          <ul class="list-clean">
+            <li><strong>邮件类型：</strong>欢迎邮件 / 产品目录 / 限时优惠</li>
+            <li><strong>数据来源：</strong>表单、名片、会后跟进</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🌍 欧洲分销商</h3>
+          <p class="description">法国/意大利/葡萄牙等国配件批发商</p>
+          <ul class="list-clean">
+            <li><strong>邮件类型：</strong>品牌介绍 / 分销政策 / 合作邀请</li>
+            <li><strong>数据来源：</strong>站外拓客、社媒、展会</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <p><strong>平台建议：</strong>Brevo / MailerLite / HubSpot Starter · GDPR 合规（每封邮件必须有取消订阅链接）</p>
+      </div>
+    </section>
+
+    <!-- 邮件内容策略 -->
+    <section class="section">
+      <h2>三、邮件内容策略（Content Strategy）</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>1. 品牌类（Branding）<span class="badge badge-success">提升信任</span></h3>
+          <ul class="list-clean">
+            <li><strong>主题示例：</strong>📦 WePhone – Tu proveedor de confianza en accesorios de móvil desde 2015</li>
+            <li><strong>要点：</strong>公司简介 / 仓储规模 / 15年经验 / 热销产品图</li>
+            <li><strong>CTA：</strong><em>Descubre nuestro catálogo completo</em></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>2. 批发促销（B2B Promotion）<span class="badge badge-primary">拉动下单</span></h3>
+          <ul class="list-clean">
+            <li><strong>主题示例：</strong>💥 Ofertas por tiempo limitado – Hasta -25% en fundas y cargadores</li>
+            <li><strong>结构：</strong>折扣+库存数量 / 产品图+SKU</li>
+            <li><strong>CTA：</strong><em>Ver precios ahora</em></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>3. 新品发布（New Arrivals）<span class="badge badge-warning">优先告知</span></h3>
+          <ul class="list-clean">
+            <li><strong>主题示例：</strong>🚀 Novedad: Carcasas magnéticas Puloka para iPhone 16 ya disponibles</li>
+            <li><strong>要点：</strong>功能亮点 / 兼容型号表 / 价目 PDF</li>
+            <li><strong>CTA：</strong><em>Solicitar catálogo</em></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>4. 技术与行业资讯（Professional Tips）<span class="badge badge-secondary">专业权威</span></h3>
+          <ul class="list-clean">
+            <li><strong>主题示例：</strong>🔧 Cómo elegir el cristal templado ideal para tu cliente</li>
+            <li><strong>目标：</strong>降低退货 / 建立专业度 / 关联推荐</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h3>5. 季节与节日营销（Seasonal）<span class="badge badge-warning">节点爆发</span></h3>
+        <ul class="list-clean">
+          <li><strong>节点：</strong>黑五 / 圣诞 / 开学季 / 夏季清仓</li>
+          <li><strong>节奏：</strong>预告（Preview）→ 正式（Live Offer）</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 自动化流程 -->
+    <section class="section">
+      <h2>四、自动化流程（Automation Flow）</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>主要自动化流程</h3>
+          <div class="chart-container chart-small">
+            <canvas id="automationChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <h3>流程详情</h3>
+          <ul class="list-clean">
+            <li><strong>🆕 欢迎邮件：</strong>新注册 / 加入数据库 → 品牌+价目PDF+首单券</li>
+            <li><strong>🛒 购物车挽回：</strong>放弃 24h → 提醒 + 额外 5% 优惠</li>
+            <li><strong>🔁 复购提醒：</strong>上次采购 45 天 → 新到货+热销推荐</li>
+            <li><strong>📦 库存通知：</strong>重新入库 → 自动邮件「已恢复库存」</li>
+            <li><strong>📅 每周汇总：</strong>每周一 → 新品目录 + 本周优惠 + 行业资讯</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 设计规范 -->
+    <section class="section">
+      <h2>五、设计与模板规范（Design Guidelines）</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>🎨 视觉设计</h3>
+          <ul class="list-clean">
+            <li><strong>主色：</strong><span style="color: #FF3B30; font-weight: bold;">#FF3B30</span>（红）</li>
+            <li><strong>辅色：</strong><span style="color: #1C1C1E; font-weight: bold;">#1C1C1E</span>（深灰）</li>
+            <li><strong>图片：</strong>产品白底 + 仓库实拍 + 统一水印</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🧱 布局结构</h3>
+          <ul class="list-clean">
+            <li><strong>结构：</strong>Logo → Banner → 两栏产品 → CTA</li>
+            <li><strong>按钮：</strong>红底白字「Ver catálogo / Descargar precios」</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🔠 字体与响应式</h3>
+          <ul class="list-clean">
+            <li><strong>标题：</strong>Montserrat Bold</li>
+            <li><strong>正文：</strong>Open Sans</li>
+            <li><strong>移动端优先：</strong>≥60% 邮件在手机查看</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 执行节奏 -->
+    <section class="section">
+      <h2>六、执行节奏（Campaign Calendar）</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>周期</th>
+              <th>内容方向</th>
+              <th>邮件类型</th>
+              <th>频率</th>
+              <th>主要目标</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>每周</td>
+              <td>新品上架 / 最新批发价表</td>
+              <td>新品更新 / 批发目录</td>
+              <td>每周 1 封</td>
+              <td>优先告知 & 维持活跃</td>
+            </tr>
+            <tr>
+              <td>每两周</td>
+              <td>批发促销 / 节日特价</td>
+              <td>促销 / 清仓</td>
+              <td>每两周 1 封</td>
+              <td>拉动下单 & 库存周转</td>
+            </tr>
+            <tr>
+              <td>每月</td>
+              <td>品牌故事 / 客户案例 / 新品合集</td>
+              <td>品牌内容型</td>
+              <td>每月 1 封</td>
+              <td>提升信任与品牌印象</td>
+            </tr>
+            <tr>
+              <td>临时活动</td>
+              <td>黑五 / 圣诞 / 夏促 / 清仓</td>
+              <td>节日营销</td>
+              <td>灵活</td>
+              <td>爆发性销售</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <p><strong>建议：</strong>周三发送新品；黑五/圣诞采用「预告 + 正式」双邮件策略；促销前 24h 在 WhatsApp 群同步。</p>
+      </div>
+    </section>
+
+    <!-- KPI 与效果追踪 -->
+    <section class="section">
+      <h2>七、KPI 与效果追踪（Performance Tracking）</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>关键指标目标</h3>
+          <div class="chart-container">
+            <canvas id="kpiChart"></canvas>
+          </div>
+        </div>
+        <div class="card">
+          <h3>追踪工具</h3>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>指标</th>
+                  <th>目标值</th>
+                  <th>工具</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>打开率（Open）</td>
+                  <td>≥ 35%</td>
+                  <td>Brevo / MailerLite</td>
+                </tr>
+                <tr>
+                  <td>点击率（CTR）</td>
+                  <td>≥ 10%</td>
+                  <td>同上</td>
+                </tr>
+                <tr>
+                  <td>批发订单转化率</td>
+                  <td>≥ 4%</td>
+                  <td>PrestaShop + GA</td>
+                </tr>
+                <tr>
+                  <td>退订率</td>
+                  <td>&lt; 1.5%</td>
+                  <td>自动统计</td>
+                </tr>
+                <tr>
+                  <td>邮件名单增长</td>
+                  <td>≥ 150 / 月（B端）</td>
+                  <td>展会 + 网站 + WhatsApp</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 邮件注册与名单增长 -->
+    <section class="section">
+      <h2>八、邮件注册与名单增长（List Growth）</h2>
+      <div class="card">
+        <h3>增长策略</h3>
+        <ul class="list-clean">
+          <li><strong>网站页脚：</strong>📩 订阅批发价更新</li>
+          <li><strong>WhatsApp 自动回复：</strong>收集邮箱</li>
+          <li><strong>TikTok/Instagram 简介链接：</strong>订阅入口</li>
+          <li><strong>包裹卡片二维码：</strong>扫码领取价目 PDF</li>
+          <li><strong>展会/拜访：</strong>当面收集并即时录入</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 样例邮件模板 -->
+    <section class="section">
+      <h2>九、样例邮件模板（西语文案示例）</h2>
+      <div class="card">
+        <h3>新品发布邮件模板</h3>
+        <div class="code-block">Asunto: 🚀 Nuevas fundas Puloka para iPhone 16 – ¡Ya disponibles para tiendas!
+
+Estimado cliente,
+
+Ya están disponibles las **nuevas fundas magnéticas Puloka**, compatibles con iPhone 16 y 16 Pro.
+
+✅ Diseño premium con anillo magnético
+✅ Paquete de 10 unidades con descuento especial
+✅ Envíos desde Madrid en 24 h
+
+📦 Descarga el **catálogo completo de precios** aquí 👉 [Ver catálogo](https://wephoneshop.es)
+
+Gracias por confiar en **WePhoneShop.es** – tu socio de accesorios desde 2015.
+
+Equipo WePhone
+
+WePhoneShop.es · Proveedor mayorista de accesorios en España
+📞 +34 600 000 000 | ✉️ info@wephoneshop.es
+[Cancelar suscripción]</div>
+      </div>
+    </section>
+
+    <!-- 阶段性实施计划 -->
+    <section class="section">
+      <h2>十、阶段性实施计划（Roadmap）</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>阶段1 · 基础搭建（1–2个月）</h3>
+          <ul class="list-clean">
+            <li>导入客户数据库，清洗与分组</li>
+            <li>配置 Brevo 自动化流程</li>
+            <li>制作 3 套邮件模板</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>阶段2 · 节奏化执行（3–5个月）</h3>
+          <ul class="list-clean">
+            <li>每周新品、双周促销、月度报告</li>
+            <li>UTM 追踪 + KPI 看板复盘</li>
+            <li>优化主题、折扣与CTA（A/B测试）</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>阶段3 · 优化与扩展（6–12个月）</h3>
+          <ul class="list-clean">
+            <li>多语言分支（PT/FR）与分销频道</li>
+            <li>CRM 整合（购买记录 + 邮件行为）</li>
+            <li>目标：邮件拉动月度订单 ≥10%</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 合规与备注 -->
+    <section class="section">
+      <h2>合规与备注</h2>
+      <div class="card">
+        <ul class="list-clean">
+          <li><strong>GDPR：</strong>每封邮件保留取消订阅链接；妥善管理退订与隐私请求。</li>
+          <li><strong>追踪：</strong>使用 UTM（如 <code>?utm_source=email&utm_campaign=weekly-new</code>）。</li>
+          <li><strong>数据：</strong>本页面为视觉化方案展示，不含个人数据。</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerContainer = document.querySelector('.hamburger-container');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navMenu = document.getElementById('navMenu');
+    const navMenuOverlay = document.getElementById('navMenuOverlay');
+    
+    // Scroll-based navigation switching
+    function handleScroll() {
+        const scrollY = window.scrollY;
+        
+        if (scrollY > 100) {
+            // Show hamburger menu, hide normal menu
+            hamburgerContainer.classList.add('show');
+            navMenu.classList.add('hidden');
+        } else {
+            // Show normal menu, hide hamburger menu
+            hamburgerContainer.classList.remove('show');
+            navMenu.classList.remove('hidden');
+            // Also close overlay if it's open
+            hamburgerBtn.classList.remove('active');
+            navMenuOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    // Listen to scroll events
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initial check
+    handleScroll();
+    
+    // Toggle hamburger menu
+    hamburgerBtn.addEventListener('click', function() {
+        hamburgerBtn.classList.toggle('active');
+        navMenuOverlay.classList.toggle('show');
+        
+        if (navMenuOverlay.classList.contains('show')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+        
+        // Add animation delay to nav buttons
+        const navButtons = navMenuOverlay.querySelectorAll('.nav-button');
+        navButtons.forEach((btn, index) => {
+            btn.style.animationDelay = `${(index + 1) * 0.1}s`;
+        });
+    });
+    
+    // Close overlay when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!hamburgerBtn.contains(e.target) && !navMenuOverlay.contains(e.target)) {
+            hamburgerBtn.classList.remove('active');
+            navMenuOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Close overlay on ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && navMenuOverlay.classList.contains('show')) {
+            hamburgerBtn.classList.remove('active');
+            navMenuOverlay.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    });
+});
+
+    // Chart.js configurations
+    Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    Chart.defaults.color = '#64748b';
+
+    // KPI Chart
+    const kpiCtx = document.getElementById('kpiChart').getContext('2d');
+    new Chart(kpiCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['打开率目标', '点击率目标', '转化率目标', '退订率控制', '名单增长'],
+        datasets: [{
+          data: [35, 10, 4, 1.5, 150],
+          backgroundColor: [
+            '#FF3B30',
+            '#FF6B47',
+            '#FF9500',
+            '#FFCC02',
+            '#34C759'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 20,
+              usePointStyle: true
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label;
+                const value = context.parsed;
+                if (label.includes('率')) {
+                  return `${label}: ${value}%`;
+                } else if (label.includes('增长')) {
+                  return `${label}: ${value}/月`;
+                }
+                return `${label}: ${value}`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Automation Flow Chart
+    const automationCtx = document.getElementById('automationChart').getContext('2d');
+    new Chart(automationCtx, {
+      type: 'bar',
+      data: {
+        labels: ['欢迎邮件', '购物车挽回', '复购提醒', '库存通知', '每周汇总'],
+        datasets: [{
+          label: '触发频率（次/月）',
+          data: [50, 25, 30, 15, 4],
+          backgroundColor: [
+            '#FF3B30',
+            '#FF6B47',
+            '#FF9500',
+            '#FFCC02',
+            '#34C759'
+          ],
+          borderRadius: 4,
+          borderSkipped: false
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)'
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add loading animation
+    window.addEventListener('load', () => {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+  </script>
+</body>
+</html>
