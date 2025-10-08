@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>社交平台方案 — WePhone 欧洲市场拓展方案</title>
+
+<style>
+/* 引入统一响应式设计系统 */
+@import url('responsive-system.css');
+
+/* shadcn/ui inspired design system */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  padding: 1.5rem;
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--muted));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: hsl(var(--background));
+  padding: 2rem;
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border: 1px solid hsl(var(--border));
+}
+
+/* Typography */
+h1 {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: hsl(var(--foreground));
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+h4 {
+  font-size: clamp(1.125rem, 2vw, 1.25rem);
+  font-weight: 600;
+  line-height: 1.4;
+  color: hsl(var(--foreground));
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Section styling */
+.section {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.section:last-child {
+  border-bottom: none;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 3rem 0;
+  background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--muted)) 100%);
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+}
+
+.hero .badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  margin: 0 0.25rem 1rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hero .subtitle {
+  font-size: 1.125rem;
+  color: hsl(var(--muted-foreground));
+  margin-bottom: 2rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* KPI Cards - shadcn/ui Card style */
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.kpi .item {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 120px;
+  justify-content: center;
+}
+
+.kpi .item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.kpi .item:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-1px);
+}
+
+.kpi .item:hover::before {
+  opacity: 1;
+}
+
+.kpi .item b {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
+  max-width: 100%;
+}
+
+.kpi .item .muted {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  line-height: 1.3;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
+}
+
+/* Navigation Menu Styles */
+.nav-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+.nav-menu.hidden {
+  display: none;
+}
+
+.nav-menu.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-menu.overlay.show {
+  display: flex;
+}
+
+.nav-menu.overlay .nav-button {
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideInUp 0.5s ease forwards;
+}
+
+.nav-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: calc(var(--radius) - 2px);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-button:hover {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 0.1);
+}
+
+.nav-button.active {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-color: hsl(var(--primary));
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  cursor: pointer;
+  font-size: 1.25rem;
+}
+
+/* Mobile responsive navigation */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+  
+  .nav-menu:not(.overlay) {
+    display: none;
+  }
+  
+  .nav-menu.overlay .nav-button {
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+  }
+}
+
+/* Enhanced Mobile Responsive Design */
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  
+  .container {
+    padding: 1rem;
+    border-radius: calc(var(--radius) + 2px);
+  }
+  
+  /* Typography adjustments for mobile */
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  h4 {
+    font-size: 1.125rem;
+    line-height: 1.3;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Section spacing for mobile */
+  .section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  /* Hero section mobile optimization */
+  .hero {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .hero .subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* KPI cards mobile optimization */
+  .kpi {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+  
+  .kpi .item {
+    padding: 1rem;
+    min-height: 100px;
+    text-align: center;
+  }
+  
+  .kpi .item b {
+    font-size: 1.125rem;
+    margin-bottom: 0.375rem;
+    line-height: 1.2;
+  }
+  
+  .kpi .item .muted {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+  
+  /* Grid system mobile optimization */
+  .grid.cols-2,
+  .grid.cols-3,
+  .grid.cols-4 {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  /* Card mobile optimization */
+  .card {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Table mobile optimization */
+  .table-container {
+    margin: 1rem 0;
+    border-radius: calc(var(--radius) - 2px);
+  }
+  
+  table {
+    font-size: 0.8rem;
+    min-width: 500px;
+  }
+  
+  th, td {
+    padding: 0.5rem 0.25rem;
+    word-break: break-word;
+  }
+  
+  th {
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  
+  /* Timeline mobile optimization */
+  .timeline {
+    padding-left: 1.5rem;
+  }
+  
+  .timeline::before {
+    left: 0.375rem;
+  }
+  
+  .timeline-item {
+    margin-bottom: 1.5rem;
+  }
+  
+  .timeline-item::before {
+    left: -1.375rem;
+    width: 10px;
+    height: 10px;
+    top: 0.75rem;
+  }
+  
+  .timeline-content {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .timeline-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .timeline-title strong {
+    font-size: 0.9rem;
+  }
+  
+  .timeline-description {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  
+  /* Badge mobile optimization */
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* List mobile optimization */
+  .list {
+    gap: 0.5rem;
+  }
+  
+  .list-item {
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .list-item .dot {
+    width: 6px;
+    height: 6px;
+    margin-top: 0.375rem;
+  }
+  
+  /* Navigation button mobile optimization */
+  .nav-button {
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .container {
+    padding: 1.5rem;
+  }
+  
+  /* Tablet-mobile hybrid adjustments */
+  .grid.cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid.cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .kpi {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .kpi .item {
+    padding: 1.125rem;
+    min-height: 105px;
+  }
+  
+  .kpi .item b {
+    font-size: 1.25rem;
+  }
+  
+  /* Table improvements for medium screens */
+  table {
+    font-size: 0.875rem;
+  }
+  
+  th, td {
+    padding: 0.625rem 0.5rem;
+  }
+  
+  /* Timeline adjustments */
+  .timeline-title {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Tablet Responsive Design (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  body {
+    padding: 1.25rem;
+  }
+  
+  .container {
+    padding: 2rem;
+    max-width: 1200px;
+  }
+  
+  /* Typography for tablet */
+  h1 {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+  
+  /* Grid optimizations for tablet */
+  .grid.cols-4 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  
+  .grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  
+  .grid.cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  /* KPI layout for tablet */
+  .kpi {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  .kpi .item {
+    padding: 1.25rem;
+    min-height: 110px;
+  }
+  
+  .kpi .item b {
+    font-size: 1.375rem;
+  }
+  
+  /* Card optimizations */
+  .card {
+    padding: 1.25rem;
+  }
+  
+  /* Table optimizations for tablet */
+  table {
+    font-size: 0.9rem;
+  }
+  
+  th, td {
+    padding: 0.75rem 0.625rem;
+  }
+  
+  /* Timeline optimizations */
+  .timeline {
+    padding-left: 2.5rem;
+  }
+  
+  .timeline-content {
+    padding: 1.25rem;
+  }
+  
+  /* Navigation optimizations */
+  .nav-menu {
+    gap: 0.75rem;
+    padding: 1.25rem;
+  }
+  
+  .nav-button {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Desktop Responsive Design (1025px+) */
+@media (min-width: 1025px) {
+  body {
+    padding: 1.5rem;
+  }
+  
+  .container {
+    padding: 2.5rem;
+    max-width: 1400px;
+  }
+  
+  /* Enhanced grid for desktop */
+  .grid.cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .grid.cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  
+  /* KPI layout for desktop */
+  .kpi {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .kpi .item {
+    padding: 1.75rem;
+    min-height: 130px;
+  }
+  
+  .kpi .item b {
+    font-size: 1.5rem;
+    margin-bottom: 0.625rem;
+  }
+  
+  .kpi .item .muted {
+    font-size: 0.9rem;
+  }
+  
+  /* Enhanced card hover effects for desktop */
+  .card {
+    padding: 1.75rem;
+    transition: all 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px 0 rgb(0 0 0 / 0.15), 0 4px 10px -2px rgb(0 0 0 / 0.1);
+  }
+  
+  /* Table enhancements for desktop */
+  table {
+    font-size: 1rem;
+  }
+  
+  th, td {
+    padding: 1rem 1.25rem;
+  }
+  
+  /* Timeline enhancements */
+  .timeline {
+    padding-left: 3rem;
+  }
+  
+  .timeline::before {
+    left: 0.75rem;
+    width: 3px;
+  }
+  
+  .timeline-item::before {
+    left: -2rem;
+    width: 14px;
+    height: 14px;
+  }
+  
+  .timeline-content {
+    padding: 1.5rem;
+  }
+  
+  /* Navigation enhancements */
+  .nav-menu {
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .nav-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .nav-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.15);
+  }
+  
+  /* Hero section enhancements */
+  .hero {
+    padding: 4rem 2rem;
+  }
+  
+  .hero .subtitle {
+    font-size: 1.25rem;
+    max-width: 900px;
+  }
+}
+
+/* Animation keyframes */
+@keyframes slideInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-menu.overlay .nav-button:nth-child(1) { animation-delay: 0.1s; }
+.nav-menu.overlay .nav-button:nth-child(2) { animation-delay: 0.2s; }
+.nav-menu.overlay .nav-button:nth-child(3) { animation-delay: 0.3s; }
+.nav-menu.overlay .nav-button:nth-child(4) { animation-delay: 0.4s; }
+.nav-menu.overlay .nav-button:nth-child(5) { animation-delay: 0.5s; }
+.nav-menu.overlay .nav-button:nth-child(6) { animation-delay: 0.6s; }
+.nav-menu.overlay .nav-button:nth-child(7) { animation-delay: 0.7s; }
+.nav-menu.overlay .nav-button:nth-child(8) { animation-delay: 0.8s; }
+
+.nav-menu.overlay .nav-button:hover {
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  transform: scale(1.05);
+}
+
+.nav-menu.overlay .nav-button.active {
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+}
+
+/* Card Grid System */
+.grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.grid.cols-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid.cols-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.grid.cols-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Card Component */
+.card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.card:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  transform: translateY(-1px);
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Table Styles */
+.table-container {
+  overflow-x: auto;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: hsl(var(--card));
+}
+
+th, td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid hsl(var(--border));
+  vertical-align: top;
+}
+
+th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+  color: hsl(var(--foreground));
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* List Styles */
+.list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.list-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.list-item .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  background: hsl(var(--primary));
+  flex-shrink: 0;
+}
+
+/* Badge/Pill Component */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+/* Progress Bar */
+.progress {
+  height: 8px;
+  background: hsl(var(--muted));
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  transition: width 0.3s ease;
+}
+
+/* Timeline Component */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: hsl(var(--border));
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1.75rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  background: hsl(var(--primary));
+  border-radius: 50%;
+  border: 3px solid hsl(var(--background));
+}
+
+.timeline-content {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.timeline-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.timeline-description {
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Tag Component */
+.tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  margin-right: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Utility Classes */
+.text-muted {
+  color: hsl(var(--muted-foreground));
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+/* Touch-friendly and accessibility improvements */
+.nav-button,
+.card,
+.kpi .item,
+.timeline-content {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.nav-button:focus,
+.card:focus {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Improved scrollbar for webkit browsers */
+.table-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Enhanced loading and transition states */
+.card,
+.kpi .item,
+.timeline-content,
+.nav-button {
+  will-change: transform, box-shadow;
+}
+
+/* Print styles */
+@media print {
+  body {
+    padding: 0;
+    background: white;
+    color: black;
+  }
+  
+  .container {
+    box-shadow: none;
+    border: none;
+    max-width: none;
+    padding: 1rem;
+  }
+  
+  .nav-menu,
+  .hamburger {
+    display: none;
+  }
+  
+  .section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .card,
+  .timeline-content {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+  
+  .hero {
+    background: none;
+    border: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border: 240 5.9% 70%;
+    --muted: 240 4.8% 85.9%;
+  }
+  
+  .card,
+  .kpi .item,
+  .timeline-content {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .nav-menu.overlay .nav-button {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Footer */
+.footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid hsl(var(--border));
+  text-align: center;
+  font-size: 0.875rem;
+  color: hsl(var(--muted-foreground));
+}
+</style>
+</head>
+<body>
+
+<!-- Hamburger Menu Button -->
+<button class="hamburger" id="hamburgerBtn">☰</button>
+
+<!-- Overlay Navigation Menu for Hamburger -->
+<nav class="nav-menu overlay" id="navMenuOverlay">
+<a href="index.html" class="nav-button">首页</a>
+<a href="wephone.html" class="nav-button">WePhoneShop.es 报告</a>
+<a href="apokin.html" class="nav-button">Apokin.es 报告</a>
+<a href="comparison.html" class="nav-button">对比分析</a>
+<a href="seo-plan.html" class="nav-button">SEO优化方案</a>
+<a href="email-marketing.html" class="nav-button">邮件营销方案</a>
+<a href="social-strategy.html" class="nav-button active">社交平台方案</a>
+<a href="puloka.html" class="nav-button">Puloka 品牌调研</a>
+</nav>
+
+<div class="container">
+<!-- Normal Navigation Menu -->
+<nav class="nav-menu" id="navMenu">
+<a href="index.html" class="nav-button">首页</a>
+<a href="wephone.html" class="nav-button">WePhoneShop.es 报告</a>
+<a href="apokin.html" class="nav-button">Apokin.es 报告</a>
+<a href="comparison.html" class="nav-button">对比分析</a>
+<a href="seo-plan.html" class="nav-button">SEO优化方案</a>
+<a href="email-marketing.html" class="nav-button">邮件营销方案</a>
+<a href="social-strategy.html" class="nav-button active">社交平台方案</a>
+<a href="puloka.html" class="nav-button">Puloka 品牌调研</a>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="badge">📅 2025-10-08 · 2025年10月版</div>
+  <h1>WePhone 社交平台账号分析与优化方案</h1>
+  <p class="subtitle">以 TikTok 为增长引擎 · Instagram 为视觉橱窗 · Facebook 为 B2B 窗口 · YouTube 为素材与 SEO · Google Maps 为口碑支撑</p>
+</section>
+
+<!-- 6个月核心目标 -->
+<section class="section">
+  <h2>🎯 6个月核心目标</h2>
+  <div class="kpi">
+    <div class="item">
+      <b>TikTok 粉丝</b>
+      <div class="muted">13.3K → 20K+</div>
+    </div>
+    <div class="item">
+      <b>Instagram 粉丝</b>
+      <div class="muted">80 → 1,000</div>
+    </div>
+    <div class="item">
+      <b>Facebook 粉丝</b>
+      <div class="muted">6 → 300</div>
+    </div>
+    <div class="item">
+      <b>Google Maps 评分</b>
+      <div class="muted">3.9 → 4.3⭐️（评价数提升）</div>
+    </div>
+    <div class="item">
+      <b>官网社交引流点击率</b>
+      <div class="muted">+30%</div>
+    </div>
+  </div>
+</section>
+
+<!-- 账号现状总览 -->
+<section class="section">
+  <h2>📊 账号现状总览</h2>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>平台 KPI</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>平台</th>
+              <th>账号</th>
+              <th>当前</th>
+              <th>活跃度</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>TikTok</td>
+              <td>@wephoneoficial</td>
+              <td><strong>13,300 粉丝</strong></td>
+              <td>较高</td>
+              <td>短视频为主，具增长潜力</td>
+            </tr>
+            <tr>
+              <td>Instagram</td>
+              <td>@wephoneshop.es</td>
+              <td>约 <strong>80 粉丝</strong></td>
+              <td>较低</td>
+              <td>需统一视觉与提升频率</td>
+            </tr>
+            <tr>
+              <td>Facebook</td>
+              <td>WePhone Accesorios</td>
+              <td><strong>6 粉丝</strong></td>
+              <td>较低</td>
+              <td>定位改为 B2B 信息与咨询</td>
+            </tr>
+            <tr>
+              <td>YouTube</td>
+              <td>WePhoneShop</td>
+              <td><strong>24 订阅</strong></td>
+              <td>低</td>
+              <td>转 Shorts + 标题SEO</td>
+            </tr>
+            <tr>
+              <td>Google Maps</td>
+              <td>WePhoneShop</td>
+              <td><strong>3.9★ · 24 条评价</strong></td>
+              <td>中</td>
+              <td>需回评差评与引导好评</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3>关键问题雷达</h3>
+      <div class="list">
+        <div class="list-item">
+          <span class="dot"></span>
+          <div><strong>品牌一致性</strong>：封面/色彩/字体不统一 → 需要 VI 规范</div>
+        </div>
+        <div class="list-item">
+          <span class="dot"></span>
+          <div><strong>内容结构</strong>：缺少固定栏目、节奏不稳 → 建立栏目池与排期</div>
+        </div>
+        <div class="list-item">
+          <span class="dot"></span>
+          <div><strong>互动深度</strong>：评论回复少 → 引入提问、投票、UGC 激励</div>
+        </div>
+        <div class="list-item">
+          <span class="dot"></span>
+          <div><strong>B2B 信息</strong>：批发价值未凸显 → FB/IG 专栏化</div>
+        </div>
+        <div class="list-item">
+          <span class="dot"></span>
+          <div><strong>口碑管理</strong>：Google 评分一般 → 引导五星与可视化回复</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 栏目体系 -->
+<section class="section">
+  <h2>🎬 栏目体系（TikTok/IG Reels 同步）</h2>
+  <div class="grid cols-4">
+    <div class="card">
+      <div class="badge">🆕 新品推荐</div>
+      <h3>每周上新 · 快速开箱</h3>
+      <div class="text-muted text-sm">Novedades · 1–2 条/周</div>
+    </div>
+    <div class="card">
+      <div class="badge">🔝 爆款榜单</div>
+      <h3>Top3 热卖 · 场景演示</h3>
+      <div class="text-muted text-sm">Top Ventas · 1 条/周</div>
+    </div>
+    <div class="card">
+      <div class="badge">🧠 手机小技巧</div>
+      <h3>实用设置 · 小白友好</h3>
+      <div class="text-muted text-sm">Trucos · 2 条/周</div>
+    </div>
+    <div class="card">
+      <div class="badge">🚚 仓库日常</div>
+      <h3>备货/包装/发货 · 真实感</h3>
+      <div class="text-muted text-sm">Almacén · 1 条/周</div>
+    </div>
+  </div>
+</section>
+
+<!-- 平台优化策略 -->
+<section class="section">
+  <h2>🧩 平台优化策略</h2>
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>1) TikTok（增长引擎）</h3>
+      <ul class="text-sm">
+        <li>统一封面/水印/色板，固定口号 CTA</li>
+        <li>每天 0–1 条，优先 18:00–21:00</li>
+        <li>Hashtags：#WePhone #AccesoriosMóviles #MayoristaEspaña #TrucosMóviles</li>
+        <li>每月复盘：播放/完播/互动率/粉丝增幅</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>2) Instagram（品牌橱窗）</h3>
+      <ul class="text-sm">
+        <li>贴文60% + Reels40%，视觉模板统一</li>
+        <li>Story 高亮：Novedades / Opiniones / Almacén / Trucos</li>
+        <li>Bio 放官网与 TikTok 链接</li>
+        <li>每月一次互动活动（抽奖/问答）</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>3) Facebook（B2B窗口）</h3>
+      <ul class="text-sm">
+        <li>发布新品目录/价格政策/合作说明</li>
+        <li>接入 WhatsApp Business 快速询价</li>
+        <li>10–30€/月小额推广触达批发商</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid cols-3 mt-4">
+    <div class="card">
+      <h3>4) YouTube（素材+SEO）</h3>
+      <ul class="text-sm">
+        <li>长视频演示 + Shorts 同步</li>
+        <li>标题 SEO：型号+卖点（西语）</li>
+        <li>描述放站点/TikTok/IG 链接</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>5) Google Maps（口碑）</h3>
+      <ul class="text-sm">
+        <li>引导满意客户好评（店内海报/WhatsApp）</li>
+        <li>48 小时内专业回应差评</li>
+        <li>每月更新门店/仓库/产品照片</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>6) 官网联动（转化）</h3>
+      <ul class="text-sm">
+        <li>各平台简介添加 wephoneshop.es</li>
+        <li>设置社交流量落地页（新品/爆款）</li>
+        <li>埋点跟踪社交流量点击与转化</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 6个月路线图 -->
+<section class="section">
+  <h2>🗺️ 6个月路线图</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-title">
+          <strong>阶段1 · 基础统一（第1月）</strong>
+          <span class="badge">VI 规范 + 栏目搭建</span>
+        </div>
+        <div class="timeline-description">
+          统一封面模板、品牌色；确定 TikTok/IG 栏目池；完成 Google 负评处理机制。
+        </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-title">
+          <strong>阶段2 · 内容加速（第2–3月）</strong>
+          <span class="badge">节奏稳定</span>
+        </div>
+        <div class="timeline-description">
+          TikTok 每周 3–5 条；IG 每周 2 贴文 + 1 Reels；FB 发布合作与目录。
+        </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-title">
+          <strong>阶段3 · 互动增长（第4月）</strong>
+          <span class="badge">UGC/活动</span>
+        </div>
+        <div class="timeline-description">
+          做 1 次抽奖或挑战；收集客户视频/好评图。
+        </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-title">
+          <strong>阶段4 · 广告与合作（第5月）</strong>
+          <span class="badge">付费小额验证</span>
+        </div>
+        <div class="timeline-description">
+          测试 TikTok/Facebook 小预算广告；邀约区域 KOL 合作。
+        </div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-content">
+        <div class="timeline-title">
+          <strong>阶段5 · 复盘扩展（第6月）</strong>
+          <span class="badge">数据驱动</span>
+        </div>
+        <div class="timeline-description">
+          输出 KPI 报表；沉淀"高表现"主题与模板，进入季度循环。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KPI 面板 -->
+<section class="section">
+  <h2>📐 KPI 面板（目标对齐）</h2>
+  <div class="kpi">
+    <div class="item">
+      <b>20K+</b>
+      <div class="muted">TikTok 粉丝目标</div>
+    </div>
+    <div class="item">
+      <b>1,000</b>
+      <div class="muted">Instagram 粉丝目标</div>
+    </div>
+    <div class="item">
+      <b>300</b>
+      <div class="muted">Facebook 粉丝目标</div>
+    </div>
+    <div class="item">
+      <b>4.3★</b>
+      <div class="muted">Google Maps 评分目标</div>
+    </div>
+  </div>
+</section>
+
+<!-- 执行工具清单 -->
+<section class="section">
+  <h2>🧰 执行工具清单</h2>
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>设计/视频</h3>
+      <div>
+        <span class="tag">Canva</span>
+        <span class="tag">Figma</span>
+        <span class="tag">CapCut</span>
+        <span class="tag">Premiere Rush</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>排期/数据</h3>
+      <div>
+        <span class="tag">Notion</span>
+        <span class="tag">Google Sheets</span>
+        <span class="tag">TikTok Studio</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>沟通/转化</h3>
+      <div>
+        <span class="tag">WhatsApp Business</span>
+        <span class="tag">Meta Business Suite</span>
+        <span class="tag">UTM埋点</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  © 2025 WePhone 社交优化方案 | WePhone 数据分析与营销方案系统
+</footer>
+
+</div>
+
+<script>
+// Hamburger menu functionality
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navMenuOverlay = document.getElementById('navMenuOverlay');
+
+hamburgerBtn.addEventListener('click', () => {
+  navMenuOverlay.classList.toggle('show');
+});
+
+// Close overlay when clicking on a nav button
+navMenuOverlay.addEventListener('click', (e) => {
+  if (e.target.classList.contains('nav-button')) {
+    navMenuOverlay.classList.remove('show');
+  }
+});
+
+// Close overlay when clicking outside
+navMenuOverlay.addEventListener('click', (e) => {
+  if (e.target === navMenuOverlay) {
+    navMenuOverlay.classList.remove('show');
+  }
+});
+
+// Scroll-based navigation switching
+let lastScrollTop = 0;
+const navMenu = document.getElementById('navMenu');
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+  if (scrollTop > lastScrollTop && scrollTop > 100) {
+    // Scrolling down
+    navMenu.classList.add('hidden');
+  } else {
+    // Scrolling up
+    navMenu.classList.remove('hidden');
+  }
+  
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+});
+</script>
+
+</body>
+</html>

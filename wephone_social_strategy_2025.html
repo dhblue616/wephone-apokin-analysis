@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WePhone 社交平台账号分析与优化方案（可视化版）</title>
+<style>
+  :root {
+    --bg: #0b1220;
+    --card: #101827;
+    --muted: #94a3b8;
+    --text: #e5e7eb;
+    --accent: #60a5fa;
+    --accent-2: #22d3ee;
+    --ok: #34d399;
+    --warn: #fbbf24;
+    --bad: #f87171;
+    --brand: #2563eb;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: linear-gradient(180deg, #0b1220, #0b1220 60%, #0e172a);
+    color: var(--text); font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px 64px; }
+  header.hero {
+    display:grid; gap:16px; grid-template-columns: 1.2fr 1fr; align-items:center; padding: 16px 0 8px;
+  }
+  header .title { font-size: 28px; line-height:1.2; font-weight: 800; letter-spacing: .2px; }
+  header .subtitle { color: var(--muted); margin-top: 8px; }
+  header .badge { display:inline-flex; align-items:center; gap:8px; background: #0ea5e9; color:#03233a; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+  .grid { display:grid; gap:16px; }
+  .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 960px) {
+    header.hero { grid-template-columns: 1fr; }
+    .grid.cols-4, .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: linear-gradient(180deg, #111827, #0f172a);
+    border: 1px solid rgba(255,255,255,.06); border-radius: 16px; padding: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.03);
+  }
+  .card h3 { margin: 0 0 8px; font-size: 16px; letter-spacing:.2px; }
+  .kpi { display:flex; align-items:baseline; gap:10px; }
+  .kpi .value { font-size: 28px; font-weight: 800; }
+  .kpi .delta { font-size: 12px; padding:2px 6px; border-radius: 6px; }
+  .delta.up { background: rgba(52,211,153,.15); color: var(--ok); }
+  .delta.none { background: rgba(148,163,184,.12); color: var(--muted); }
+  .delta.down { background: rgba(248,113,113,.12); color: var(--bad); }
+  .pill { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:999px; background: rgba(96,165,250,.12); color: #bfdbfe; font-size:12px; }
+  .muted { color: var(--muted); }
+  .bar { height:10px; background:#0b1220; border-radius:999px; overflow:hidden; border:1px solid rgba(255,255,255,.06) }
+  .bar > span { display:block; height:100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .section-title { font-weight:900; font-size: 20px; margin: 30px 0 12px; letter-spacing:.3px; }
+  .row { display:flex; gap:16px; }
+  .row .card { flex:1; }
+  .list { display:grid; gap:8px; font-size:14px; }
+  .list .li { display:flex; gap:10px; align-items:flex-start; }
+  .li .dot { width:8px; height:8px; border-radius:50%; margin-top:8px; background: var(--accent); box-shadow: 0 0 0 3px rgba(96,165,250,.12); }
+  a.link { color:#a5b4fc; text-decoration:none; border-bottom:1px dashed rgba(165,180,252,.4); }
+  .tag { display:inline-block; font-size:12px; padding:2px 8px; border-radius:999px; background: rgba(226,232,240,.08); color:#cbd5e1; margin-right:6px; }
+  table { width:100%; border-collapse: collapse; }
+  th, td { text-align:left; padding:10px 12px; border-bottom:1px dashed rgba(148,163,184,.2); vertical-align: top; }
+  th { color:#cbd5e1; font-weight:700; }
+  .ok { color: var(--ok); }
+  .warn { color: var(--warn); }
+  .bad { color: var(--bad); }
+  footer { margin-top:36px; font-size:12px; color: var(--muted); text-align:center; }
+  .timeline { position:relative; padding-left:18px; }
+  .timeline::before { content:""; position:absolute; left:6px; top:0; bottom:0; width:2px; background: rgba(148,163,184,.25); }
+  .tl-item { position:relative; margin: 12px 0 12px 0; }
+  .tl-item::before { content:""; position:absolute; left:-2px; top:6px; width:10px; height:10px; background: var(--accent); border-radius:50%; box-shadow: 0 0 0 4px rgba(96,165,250,.15); }
+  .small { font-size:12px; color: var(--muted); }
+  .goal { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+</style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div>
+        <div class="badge">📅 2025-10-08 · 2025年10月版</div>
+        <div class="title">WePhone 社交平台账号分析与优化方案</div>
+        <div class="subtitle">以 TikTok 为增长引擎 · Instagram 为视觉橱窗 · Facebook 为 B2B 窗口 · YouTube 为素材与 SEO · Google Maps 为口碑支撑</div>
+      </div>
+      <div class="card">
+        <h3>🎯 6个月核心目标</h3>
+        <div class="list">
+          <div class="li"><span class="dot"></span><div>TikTok 粉丝 <b>13.3K → 20K+</b></div></div>
+          <div class="li"><span class="dot"></span><div>Instagram 粉丝 <b>80 → 1,000</b></div></div>
+          <div class="li"><span class="dot"></span><div>Facebook 粉丝 <b>6 → 300</b></div></div>
+          <div class="li"><span class="dot"></span><div>Google Maps 评分 <b>3.9 → 4.3⭐️</b>（评价数提升）</div></div>
+          <div class="li"><span class="dot"></span><div>官网社交引流点击率 <b>+30%</b></div></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="section-title">📊 账号现状总览</div>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>平台 KPI</h3>
+        <table>
+          <thead><tr><th>平台</th><th>账号</th><th>当前</th><th>活跃度</th><th>备注</th></tr></thead>
+          <tbody>
+            <tr><td>TikTok</td><td>@wephoneoficial</td><td><b>13,300 粉丝</b></td><td>较高</td><td>短视频为主，具增长潜力</td></tr>
+            <tr><td>Instagram</td><td>@wephoneshop.es</td><td>约 <b>80 粉丝</b></td><td>较低</td><td>需统一视觉与提升频率</td></tr>
+            <tr><td>Facebook</td><td>WePhone Accesorios</td><td><b>6 粉丝</b></td><td>较低</td><td>定位改为 B2B 信息与咨询</td></tr>
+            <tr><td>YouTube</td><td>WePhoneShop</td><td><b>24 订阅</b></td><td>低</td><td>转 Shorts + 标题SEO</td></tr>
+            <tr><td>Google Maps</td><td>WePhoneShop</td><td><b>3.9★ · 24 条评价</b></td><td>中</td><td>需回评差评与引导好评</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3>关键问题雷达</h3>
+        <div class="list">
+          <div class="li"><span class="dot"></span><div><b>品牌一致性</b>：封面/色彩/字体不统一 → 需要 VI 规范</div></div>
+          <div class="li"><span class="dot"></span><div><b>内容结构</b>：缺少固定栏目、节奏不稳 → 建立栏目池与排期</div></div>
+          <div class="li"><span class="dot"></span><div><b>互动深度</b>：评论回复少 → 引入提问、投票、UGC 激励</div></div>
+          <div class="li"><span class="dot"></span><div><b>B2B 信息</b>：批发价值未凸显 → FB/IG 专栏化</div></div>
+          <div class="li"><span class="dot"></span><div><b>口碑管理</b>：Google 评分一般 → 引导五星与可视化回复</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">🎬 栏目体系（TikTok/IG Reels 同步）</div>
+    <div class="grid cols-4">
+      <div class="card">
+        <div class="pill">🆕 新品推荐</div>
+        <h3>每周上新 · 快速开箱</h3>
+        <div class="muted small">Novedades · 1–2 条/周</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:75%"></span></div>
+      </div>
+      <div class="card">
+        <div class="pill">🔝 爆款榜单</div>
+        <h3>Top3 热卖 · 场景演示</h3>
+        <div class="muted small">Top Ventas · 1 条/周</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:65%"></span></div>
+      </div>
+      <div class="card">
+        <div class="pill">🧠 手机小技巧</div>
+        <h3>实用设置 · 小白友好</h3>
+        <div class="muted small">Trucos · 2 条/周</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:85%"></span></div>
+      </div>
+      <div class="card">
+        <div class="pill">🚚 仓库日常</div>
+        <h3>备货/包装/发货 · 真实感</h3>
+        <div class="muted small">Almacén · 1 条/周</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:55%"></span></div>
+      </div>
+    </div>
+
+    <div class="section-title">🧩 平台优化策略</div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>1) TikTok（增长引擎）</h3>
+        <ul class="small">
+          <li>统一封面/水印/色板，固定口号 CTA</li>
+          <li>每天 0–1 条，优先 18:00–21:00</li>
+          <li>Hashtags：#WePhone #AccesoriosMóviles #MayoristaEspaña #TrucosMóviles</li>
+          <li>每月复盘：播放/完播/互动率/粉丝增幅</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>2) Instagram（品牌橱窗）</h3>
+        <ul class="small">
+          <li>贴文60% + Reels40%，视觉模板统一</li>
+          <li>Story 高亮：Novedades / Opiniones / Almacén / Trucos</li>
+          <li>Bio 放官网与 TikTok 链接</li>
+          <li>每月一次互动活动（抽奖/问答）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>3) Facebook（B2B窗口）</h3>
+        <ul class="small">
+          <li>发布新品目录/价格政策/合作说明</li>
+          <li>接入 WhatsApp Business 快速询价</li>
+          <li>10–30€/月小额推广触达批发商</li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid cols-3" style="margin-top:16px;">
+      <div class="card">
+        <h3>4) YouTube（素材+SEO）</h3>
+        <ul class="small">
+          <li>长视频演示 + Shorts 同步</li>
+          <li>标题 SEO：型号+卖点（西语）</li>
+          <li>描述放站点/TikTok/IG 链接</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>5) Google Maps（口碑）</h3>
+        <ul class="small">
+          <li>引导满意客户好评（店内海报/WhatsApp）</li>
+          <li>48 小时内专业回应差评</li>
+          <li>每月更新门店/仓库/产品照片</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>6) 官网联动（转化）</h3>
+        <ul class="small">
+          <li>各平台简介添加 wephoneshop.es</li>
+          <li>设置社交流量落地页（新品/爆款）</li>
+          <li>埋点跟踪社交流量点击与转化</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">🗺️ 6个月路线图</div>
+    <div class="card timeline">
+      <div class="tl-item">
+        <div class="goal"><b>阶段1 · 基础统一（第1月）</b><span class="pill">VI 规范 + 栏目搭建</span></div>
+        <div class="small">统一封面模板、品牌色；确定 TikTok/IG 栏目池；完成 Google 负评处理机制。</div>
+      </div>
+      <div class="tl-item">
+        <div class="goal"><b>阶段2 · 内容加速（第2–3月）</b><span class="pill">节奏稳定</span></div>
+        <div class="small">TikTok 每周 3–5 条；IG 每周 2 贴文 + 1 Reels；FB 发布合作与目录。</div>
+      </div>
+      <div class="tl-item">
+        <div class="goal"><b>阶段3 · 互动增长（第4月）</b><span class="pill">UGC/活动</span></div>
+        <div class="small">做 1 次抽奖或挑战；收集客户视频/好评图。</div>
+      </div>
+      <div class="tl-item">
+        <div class="goal"><b>阶段4 · 广告与合作（第5月）</b><span class="pill">付费小额验证</span></div>
+        <div class="small">测试 TikTok/Facebook 小预算广告；邀约区域 KOL 合作。</div>
+      </div>
+      <div class="tl-item">
+        <div class="goal"><b>阶段5 · 复盘扩展（第6月）</b><span class="pill">数据驱动</span></div>
+        <div class="small">输出 KPI 报表；沉淀“高表现”主题与模板，进入季度循环。</div>
+      </div>
+    </div>
+
+    <div class="section-title">📐 KPI 面板（目标对齐）</div>
+    <div class="grid cols-4">
+      <div class="card">
+        <div class="kpi"><div class="value">20K+</div><div class="delta up">目标</div></div>
+        <div class="muted small">TikTok 粉丝</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:66%"></span></div>
+      </div>
+      <div class="card">
+        <div class="kpi"><div class="value">1,000</div><div class="delta up">目标</div></div>
+        <div class="muted small">Instagram 粉丝</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:8%"></span></div>
+      </div>
+      <div class="card">
+        <div class="kpi"><div class="value">300</div><div class="delta up">目标</div></div>
+        <div class="muted small">Facebook 粉丝</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:2%"></span></div>
+      </div>
+      <div class="card">
+        <div class="kpi"><div class="value">4.3★</div><div class="delta up">目标</div></div>
+        <div class="muted small">Google Maps 评分</div>
+        <div class="bar" style="margin-top:8px;"><span style="width:78%"></span></div>
+      </div>
+    </div>
+
+    <div class="section-title">🧰 执行工具清单</div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>设计/视频</h3>
+        <div class="tag">Canva</div><div class="tag">Figma</div><div class="tag">CapCut</div><div class="tag">Premiere Rush</div>
+      </div>
+      <div class="card">
+        <h3>排期/数据</h3>
+        <div class="tag">Notion</div><div class="tag">Google Sheets</div><div class="tag">TikTok Studio</div>
+      </div>
+      <div class="card">
+        <h3>沟通/转化</h3>
+        <div class="tag">WhatsApp Business</div><div class="tag">Meta Business Suite</div><div class="tag">UTM埋点</div>
+      </div>
+    </div>
+
+    <footer>
+      © 2025 WePhone 社交优化方案 · 视觉版 | 由 ChatGPT 生成（本地静态HTML，可直接发送或展示）
+    </footer>
+  </div>
+</body>
+</html>
