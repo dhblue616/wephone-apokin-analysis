@@ -183,6 +183,7 @@ table {
   background: hsl(var(--card));
   border-radius: var(--radius);
   overflow: hidden;
+  table-layout: fixed;
 }
 
 table th {
@@ -202,6 +203,10 @@ table td {
   border-bottom: 1px solid hsl(var(--border));
   font-size: 0.875rem;
   color: hsl(var(--foreground));
+  word-break: break-all;
+  word-wrap: break-word;
+  max-width: 300px;
+  overflow-wrap: break-word;
 }
 
 table tbody tr:hover {
@@ -266,6 +271,8 @@ hr {
   border: 1px solid hsl(var(--border));
   background: hsl(var(--card));
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Enhanced Responsive Design */
